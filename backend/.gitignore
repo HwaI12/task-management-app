@@ -1,0 +1,21 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Output of the go coverage tool
+*.out
+
+# Go workspace file
+go.work
+
+# Log files
+*.log
+
+# Mac system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
