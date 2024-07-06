@@ -1,13 +1,29 @@
 version: '3'
 services:
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: ../Dockerfile.frontend
     ports:
       - "3000:3000"
+    depends_on:
+      - backend
+
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: ../Dockerfile.backend
     ports:
       - "8080:8080"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=rootpassword
+      - DB_NAME=task_management
+    depends_on:
+      - db
+
   db:
     image: mysql:5.7
     ports:
