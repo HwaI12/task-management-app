@@ -1,6 +1,7 @@
-FROM golang:latest
+FROM node:17.7.2
 WORKDIR /app
+COPY package*.json ./
+RUN yarn install
 COPY . .
-RUN go mod download
-EXPOSE 8000
-ENTRYPOINT [ "go", "run", "main.go" ]
+EXPOSE 3000
+ENTRYPOINT [ "npm", "start" ]

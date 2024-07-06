@@ -1,6 +1,7 @@
 FROM golang:latest
 WORKDIR /app
-COPY . .
+COPY go.mod go.sum ./
 RUN go mod download
+COPY . .
 EXPOSE 8000
 ENTRYPOINT [ "go", "run", "main.go" ]
