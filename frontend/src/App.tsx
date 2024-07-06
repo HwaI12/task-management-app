@@ -1,8 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+type Data = {
+  message: string;
+};
+
 function App() {
+  const [data, setData] = useState<Data | null>(null);
+
+  useEffect(() => {
+    fetch('http://localhost:8000/data')
+      .then((response) => response.json())
+      .then((data) => setData(data))
+      .catch((error) => console.error('Error fetching data:', error));
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -18,6 +31,7 @@ function App() {
         >
           Learn React
         </a>
+        {data && <p>{data.message}</p>}
       </header>
     </div>
   );

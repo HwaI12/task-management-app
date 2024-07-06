@@ -1,6 +1,7 @@
-FROM node:17.7.2 as node
+FROM node:18
+
 WORKDIR /app
-COPY package*.json yarn.lock ./
+COPY package*.json ./
 RUN yarn install
 COPY . .
 EXPOSE 3000
