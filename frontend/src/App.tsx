@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
 
@@ -10,10 +11,13 @@ function App() {
   const [data, setData] = useState<Data | null>(null);
 
   useEffect(() => {
-    fetch('http://localhost:8000/data')
-      .then((response) => response.json())
-      .then((data) => setData(data))
-      .catch((error) => console.error('Error fetching data:', error));
+    axios.get<Data>(' http://localhost:8000/data')
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
   }, []);
 
   return (
