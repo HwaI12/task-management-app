@@ -1,7 +1,6 @@
-FROM node:14
+FROM golang:latest
 WORKDIR /app
-COPY package.json ./
-RUN npm install
-COPY . ./
-EXPOSE 3000
-CMD ["npm", "start"]
+COPY . .
+RUN go mod download
+EXPOSE 8000
+ENTRYPOINT [ "go", "run", "main.go" ]
