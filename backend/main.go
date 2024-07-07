@@ -53,22 +53,23 @@ func main() {
 		log.Fatalf("データベースへの接続に失敗しました: %v", err)
 	}
 
+	// Initialize router
 	router := mux.NewRouter()
 
-	// CORS設定
+	// CORS middleware setup
 	corsHandler := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:3000"}, // フロントエンドのURL
+		AllowedOrigins:   []string{"http://localhost:3000"}, // Allow frontend URL
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"*"},
 		AllowCredentials: true,
 	})
 
-	// ハンドラを登録
+	// Register handlers
 	router.HandleFunc("/register", handlers.Register(db)).Methods("POST")
 	router.HandleFunc("/login", handlers.Login(db)).Methods("POST")
 	router.HandleFunc("/delete", handlers.DeleteUser(db)).Methods("POST")
 
-	// CORSハンドラを適用
+	// Apply CORS middleware to router
 	handler := corsHandler.Handler(router)
 
 	log.Println("サーバーをポート :8000 で起動しています")

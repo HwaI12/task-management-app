@@ -1,5 +1,3 @@
-// handlers/login.go
-
 package handlers
 
 import (
@@ -27,33 +25,31 @@ func Login(db *sql.DB) http.HandlerFunc {
 		var user models.User
 		err := json.NewDecoder(r.Body).Decode(&user)
 		if err != nil {
-			log.Printf("リクエストの解析に失敗しました: %v", err)
-			http.Error(w, "無効なリクエスト形式", http.StatusBadRequest)
+			log.Printf("Failed to parse login request: %v", err)
+			http.Error(w, "Invalid request format", http.StatusBadRequest)
 			return
 		}
 
-		log.Printf("ユーザー名 %s でのログインを試行中", user.Username)
+		log.Printf("Attempting login for username: %s", user.Username)
 
 		var storedPassword string
 		err = db.QueryRow("SELECT password_hash FROM users WHERE username = ?", user.Username).Scan(&storedPassword)
 		if err != nil {
-			log.Printf("パスワードハッシュの取得に失敗しました: %v", err)
-			http.Error(w, "無効なユーザー名またはパスワード", http.StatusUnauthorized)
+			log.Printf("Failed to retrieve password hash: %v", err)
+			http.Error(w, "Invalid username or password", http.StatusUnauthorized)
 			return
 		}
 
-		log.Printf("データベースから取得したパスワードハッシュ: %s", storedPassword)
+		log.Printf("Retrieved password hash from database: %s", storedPassword)
 
 		err = bcrypt.CompareHashAndPassword([]byte(storedPassword), []byte(user.PasswordHash))
 		if err != nil {
-			log.Printf("パスワードの比較に失敗しました: %v", err)
-			log.Printf("データベースのパスワードハッシュ: %s", storedPassword)
-			log.Printf("提供されたパスワード: %s", user.PasswordHash)
-			http.Error(w, "無効なユーザー名またはパスワード", http.StatusUnauthorized)
+			log.Printf("Password comparison failed: %v", err)
+			http.Error(w, "Invalid username or password", http.StatusUnauthorized)
 			return
 		}
 
-		log.Printf("ユーザーが認証されました: %s", user.Username)
+		log.Printf("User authenticated: %s", user.Username)
 
 		expirationTime := time.Now().Add(24 * time.Hour)
 		claims := &Claims{
@@ -66,18 +62,20 @@ func Login(db *sql.DB) http.HandlerFunc {
 		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 		tokenString, err := token.SignedString(jwtKey)
 		if err != nil {
-			log.Printf("トークンの生成に失敗しました: %v", err)
-			http.Error(w, "トークンの生成に失敗しました", http.StatusInternalServerError)
+			log.Printf("Failed to generate token: %v", err)
+			http.Error(w, "Failed to generate token", http.StatusInternalServerError)
 			return
 		}
 
+		// Set cookie with JWT token
 		http.SetCookie(w, &http.Cookie{
 			Name:    "token",
 			Value:   tokenString,
 			Expires: expirationTime,
+			Path:    "/",
 		})
 
-		log.Printf("ユーザーに対してトークンを生成してセットしました: %s", user.Username)
+		log.Printf("Generated and set token for user: %s", user.Username)
 
 		w.WriteHeader(http.StatusOK)
 	}
