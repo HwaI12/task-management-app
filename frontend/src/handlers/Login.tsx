@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -18,6 +20,9 @@ const Login: React.FC = () => {
             console.log('ログイン成功:', response.data);
             alert('ログインが完了しました。');
             // ログイン成功時の処理（例：リダイレクト）を追加
+
+            localStorage.setItem('authToken', response.data.token);
+            navigate('/home');
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 console.error('ログインエラー:', error.response?.data || error.message);

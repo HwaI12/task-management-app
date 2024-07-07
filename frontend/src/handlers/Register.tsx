@@ -27,8 +27,6 @@ const Register = () => {
                 // Assuming you receive an authentication token in the response
                 // Set the token in localStorage (you need to implement this part)
                 localStorage.setItem('authToken', response.data.token);
-
-                // Redirect to the user's home page
                 navigate('/home');
             } else {
                 console.error('登録失敗:', response.status);

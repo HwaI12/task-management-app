@@ -25,30 +25,30 @@ func Login(db *sql.DB) http.HandlerFunc {
 		var user models.User
 		err := json.NewDecoder(r.Body).Decode(&user)
 		if err != nil {
-			log.Printf("Failed to parse login request: %v", err)
-			http.Error(w, "Invalid request format", http.StatusBadRequest)
+			log.Printf("ログインリクエストの解析に失敗しました: %v", err)
+			http.Error(w, "リクエストの形式が正しくありません", http.StatusBadRequest)
 			return
 		}
 
-		log.Printf("Attempting login for username: %s", user.Username)
+		log.Printf("ユーザ名 %s でのログイン試行", user.Username)
 
 		var storedPassword string
 		err = db.QueryRow("SELECT password_hash FROM users WHERE username = ?", user.Username).Scan(&storedPassword)
 		if err != nil {
 			if err == sql.ErrNoRows {
-				log.Printf("User not found: %s", user.Username)
-				http.Error(w, "Invalid username or password", http.StatusUnauthorized)
+				log.Printf("ユーザが見つかりません: %s", user.Username)
+				http.Error(w, "ユーザ名またはパスワードが正しくありません", http.StatusUnauthorized)
 			} else {
-				log.Printf("Database error: %v", err)
-				http.Error(w, "Internal server error", http.StatusInternalServerError)
+				log.Printf("データベースエラー: %v", err)
+				http.Error(w, "サーバー内部エラー", http.StatusInternalServerError)
 			}
 			return
 		}
 
 		err = bcrypt.CompareHashAndPassword([]byte(storedPassword), []byte(user.Password))
 		if err != nil {
-			log.Printf("Password comparison failed for user %s: %v", user.Username, err)
-			http.Error(w, "Invalid username or password", http.StatusUnauthorized)
+			log.Printf("ユーザ %s のパスワード比較に失敗しました: %v", user.Username, err)
+			http.Error(w, "ユーザ名またはパスワードが正しくありません", http.StatusUnauthorized)
 			return
 		}
 
@@ -63,8 +63,8 @@ func Login(db *sql.DB) http.HandlerFunc {
 		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 		tokenString, err := token.SignedString(jwtKey)
 		if err != nil {
-			log.Printf("Failed to generate token: %v", err)
-			http.Error(w, "Failed to generate token", http.StatusInternalServerError)
+			log.Printf("トークン生成に失敗しました: %v", err)
+			http.Error(w, "トークンの生成に失敗しました", http.StatusInternalServerError)
 			return
 		}
 
@@ -79,6 +79,6 @@ func Login(db *sql.DB) http.HandlerFunc {
 		})
 
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]string{"message": "Login successful"})
+		json.NewEncoder(w).Encode(map[string]string{"message": "ログインに成功しました"})
 	}
 }
