@@ -1,13 +1,15 @@
+// components/Register.jsx
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const Register: React.FC = () => {
+const Register = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const navigate = useNavigate(); // useNavigate フックを初期化
+    const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -21,7 +23,12 @@ const Register: React.FC = () => {
             if (response.status === 201) {
                 console.log('登録成功');
                 alert('ユーザー登録が完了しました。');
-                // 登録成功後、/home にリダイレクト
+
+                // Assuming you receive an authentication token in the response
+                // Set the token in localStorage (you need to implement this part)
+                localStorage.setItem('authToken', response.data.token);
+
+                // Redirect to the user's home page
                 navigate('/home');
             } else {
                 console.error('登録失敗:', response.status);

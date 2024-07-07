@@ -1,3 +1,5 @@
+// handlers/register.go
+
 package handlers
 
 import (
@@ -20,12 +22,11 @@ func Register(db *sql.DB) http.HandlerFunc {
 		var req RegisterRequest
 		err := json.NewDecoder(r.Body).Decode(&req)
 		if err != nil {
-			log.Printf("リクエストの解析に失敗しました: %v", err)
+			log.Printf("リクエストのパースに失敗しました: %v", err)
 			http.Error(w, "リクエストの形式が正しくありません", http.StatusBadRequest)
 			return
 		}
 
-		// パスワードのハッシュ化
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.PasswordHash), bcrypt.DefaultCost)
 		if err != nil {
 			log.Printf("パスワードのハッシュ化に失敗しました: %v", err)
@@ -33,11 +34,11 @@ func Register(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		// メールアドレスの重複チェック
+		// メールアドレスが既に存在するか確認
 		var emailExists bool
 		err = db.QueryRow("SELECT EXISTS(SELECT 1 FROM users WHERE email = ?)", req.Email).Scan(&emailExists)
 		if err != nil {
-			log.Printf("メールアドレスの重複チェック中にエラーが発生しました: %v", err)
+			log.Printf("メールアドレスの存在確認中にエラーが発生しました: %v", err)
 			http.Error(w, "ユーザーの登録に失敗しました", http.StatusInternalServerError)
 			return
 		}
@@ -56,9 +57,7 @@ func Register(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		log.Println("ユーザーが正常に登録されました")
+		log.Println("ユーザーが正常に登録されました.")
 		w.WriteHeader(http.StatusCreated)
-		// 必要に応じて、ユーザー情報や成功メッセージを返す
-		// json.NewEncoder(w).Encode("ユーザーが正常に登録されました")
 	}
 }
