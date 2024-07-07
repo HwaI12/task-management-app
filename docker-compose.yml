@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3'
 
 services:
   frontend:
@@ -14,13 +14,18 @@ services:
       - '8000:8000'
     tty: true
     stdin_open: true
+    env_file:
+      - ./variables.env
+    environment:
+      - DB_HOST=db
 
   db:
-    image: mysql:8.0
+    container_name: db
+    image: mysql
     volumes:
       - './db/data:/var/lib/mysql'
       - './db/my.cnf:/etc/mysql/conf.d/my.cnf'
     env_file:
-      - variables.env
+      - ./variables.env
     ports:
       - '3306:3306'

@@ -2,20 +2,38 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 
-	"github.com/HwaI12/task-management-app/backend/handlers"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
+
+	"github.com/HwaI12/task-management-app/backend/handlers"
 )
 
 var db *sql.DB
 
 func main() {
 	var err error
-	db, err = sql.Open("mysql", os.Getenv("MYSQL_USER")+":"+os.Getenv("MYSQL_PASSWORD")+"@tcp(db:3306)/"+os.Getenv("MYSQL_DATABASE"))
+
+	// 環境変数を取得
+	user := os.Getenv("MYSQL_USER")
+	password := os.Getenv("MYSQL_PASSWORD")
+	host := os.Getenv("MYSQL_HOST")
+	port := os.Getenv("MYSQL_PORT")
+	database := os.Getenv("MYSQL_DATABASE")
+
+	if user == "" || password == "" || host == "" || database == "" {
+		log.Fatal("環境変数が設定されていません")
+	}
+
+	// DSNの作成
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", user, password, host, port, database)
+	log.Println("DSN:", dsn)
+
+	db, err = sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatal(err)
 	}
