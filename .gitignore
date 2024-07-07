@@ -27,7 +27,7 @@ frontend/.env.development.local
 frontend/.env.test.local
 frontend/.env.production.local
 frontend/coverage/
-frontend/yarn.lock/
+frontend/yarn.lock
 
 # Database ignores
 db/data/
