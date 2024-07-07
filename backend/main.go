@@ -1,3 +1,5 @@
+// main.go
+
 package main
 
 import (
@@ -11,6 +13,7 @@ import (
 	"github.com/HwaI12/task-management-app/backend/handlers"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors" // corsミドルウェアのインポート
 )
 
 var db *sql.DB
@@ -39,24 +42,37 @@ func main() {
 		if err == nil {
 			err = db.Ping()
 			if err == nil {
-				log.Println("Successfully connected to the database.")
+				log.Println("データベースに正常に接続しました")
 				break
 			}
 		}
-		log.Printf("Failed to connect to database. Retrying in 5 seconds... (%d/5)\n", i+1)
+		log.Printf("データベースへの接続に失敗しました。リトライします... (%d/5)\n", i+1)
 		time.Sleep(5 * time.Second)
 	}
 	if err != nil {
-		log.Fatalf("Failed to connect to database: %v", err)
+		log.Fatalf("データベースへの接続に失敗しました: %v", err)
 	}
 
 	router := mux.NewRouter()
+
+	// CORS設定
+	corsHandler := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:3000"}, // フロントエンドのURL
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"*"},
+		AllowCredentials: true,
+	})
+
+	// ハンドラを登録
 	router.HandleFunc("/register", handlers.Register(db)).Methods("POST")
 	router.HandleFunc("/login", handlers.Login(db)).Methods("POST")
 	router.HandleFunc("/delete", handlers.DeleteUser(db)).Methods("POST")
 
-	log.Println("Starting server on :8000")
-	if err := http.ListenAndServe(":8000", router); err != nil {
-		log.Fatalf("Failed to start server: %v", err)
+	// CORSハンドラを適用
+	handler := corsHandler.Handler(router)
+
+	log.Println("サーバーをポート :8000 で起動しています")
+	if err := http.ListenAndServe(":8000", handler); err != nil {
+		log.Fatalf("サーバーの起動に失敗しました: %v", err)
 	}
 }

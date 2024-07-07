@@ -1,26 +1,23 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
+import Register from './handlers/Register';
+import Login from './handlers/Login';
+import DeleteAccount from './handlers/DeleteAccount';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+        <Link to="/register">新規登録</Link> | <Link to="/login">ログイン</Link>
+        <Routes>
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/delete" element={<DeleteAccount />} />
+        </Routes>
+      </BrowserRouter>
     </div>
-  );
+  )
 }
 
 export default App;
