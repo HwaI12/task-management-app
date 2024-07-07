@@ -11,14 +11,17 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// RegisterRequest は登録リクエストのJSON構造体です
 type RegisterRequest struct {
 	Username     string `json:"username"`
 	Email        string `json:"email"`
 	PasswordHash string `json:"password_hash"`
 }
 
+// Register は新規ユーザー登録を処理するハンドラ関数です
 func Register(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		// リクエストボディをパース
 		var req RegisterRequest
 		err := json.NewDecoder(r.Body).Decode(&req)
 		if err != nil {
@@ -27,6 +30,7 @@ func Register(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
+		// パスワードをハッシュ化
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.PasswordHash), bcrypt.DefaultCost)
 		if err != nil {
 			log.Printf("パスワードのハッシュ化に失敗しました: %v", err)

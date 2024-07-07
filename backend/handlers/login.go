@@ -1,3 +1,5 @@
+// handlers/login.go
+
 package handlers
 
 import (
@@ -15,11 +17,13 @@ import (
 
 var jwtKey = []byte("my_secret_key")
 
+// Claims はJWTのクレームを表す構造体です
 type Claims struct {
 	Username string `json:"username"`
 	jwt.StandardClaims
 }
 
+// Login はユーザーのログインを処理するハンドラ関数です
 func Login(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var user models.User
@@ -52,6 +56,7 @@ func Login(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
+		// トークンの有効期限を設定
 		expirationTime := time.Now().Add(24 * time.Hour)
 		claims := &Claims{
 			Username: user.Username,
@@ -60,6 +65,7 @@ func Login(db *sql.DB) http.HandlerFunc {
 			},
 		}
 
+		// JWTトークンを生成
 		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 		tokenString, err := token.SignedString(jwtKey)
 		if err != nil {
@@ -68,6 +74,7 @@ func Login(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
+		// クッキーにトークンを設定
 		http.SetCookie(w, &http.Cookie{
 			Name:     "token",
 			Value:    tokenString,
@@ -78,6 +85,7 @@ func Login(db *sql.DB) http.HandlerFunc {
 			SameSite: http.SameSiteLaxMode,
 		})
 
+		// レスポンスとして成功メッセージを返す
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]string{"message": "ログインに成功しました"})
 	}

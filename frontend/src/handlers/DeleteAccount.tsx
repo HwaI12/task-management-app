@@ -6,26 +6,28 @@ const DeleteAccount: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setErrorMessage('');
+        
         try {
             const response = await fetch('http://localhost:8000/delete', {
-                method: 'POST', // Changed to POST to match backend
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ email }),
-                credentials: 'include', // Add this line to include cookies
+                credentials: 'include',
             });
-    
+
             if (response.ok) {
-                console.log('アカウント削除成功');
+                console.log('Account deletion successful');
                 alert('アカウントが正常に削除されました。');
             } else {
                 const errorData = await response.json();
-                console.error('アカウント削除失敗:', errorData.message);
+                console.error('Account deletion failed:', errorData.message);
                 setErrorMessage(errorData.message || 'アカウントの削除に失敗しました。');
             }
         } catch (error) {
-            console.error('ネットワークエラー:', error);
+            console.error('Network error:', error);
             setErrorMessage('ネットワークエラーが発生しました。');
         }
     };

@@ -27,16 +27,16 @@ const Login: React.FC = () => {
                 { username, password },
                 { withCredentials: true }
             );
-            console.log('ログイン成功:', response.data);
+            console.log('Login successful:', response.data);
             alert('ログインが完了しました。');
             localStorage.setItem('authToken', response.data.token);
             navigate('/home');
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                console.error('ログインエラー:', error.response?.data || error.message);
+                console.error('Login error:', error.response?.data || error.message);
                 setErrorMessage(error.response?.data?.message || 'ログインに失敗しました。');
             } else {
-                console.error('予期せぬエラー:', error);
+                console.error('Unexpected error:', error);
                 setErrorMessage('予期せぬエラーが発生しました。');
             }
         }

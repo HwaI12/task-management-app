@@ -6,7 +6,7 @@ const isAuthenticated = (): boolean => {
     return localStorage.getItem('authToken') !== null;
 };
 
-const Register = () => {
+const Register: React.FC = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -14,7 +14,6 @@ const Register = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Check authentication status on component mount
         if (isAuthenticated()) {
             navigate('/home');
         }
@@ -22,6 +21,7 @@ const Register = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setErrorMessage('');
         try {
             const response = await axios.post('http://localhost:8000/register', {
                 username,
@@ -30,20 +30,18 @@ const Register = () => {
             });
 
             if (response.status === 201) {
-                console.log('登録成功');
+                console.log('Registration successful');
                 alert('ユーザー登録が完了しました。');
                 
-                // Store authToken in localStorage
                 localStorage.setItem('authToken', response.data.token);
                 
-                // Redirect to home
                 navigate('/home');
             } else {
-                console.error('登録失敗:', response.status);
+                console.error('Registration failed:', response.status);
                 setErrorMessage('ユーザーの登録に失敗しました。');
             }
         } catch (error) {
-            console.error('ネットワークエラー:', error);
+            console.error('Network error:', error);
             setErrorMessage('ネットワークエラーが発生しました。');
         }
     };
