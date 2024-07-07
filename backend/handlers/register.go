@@ -6,29 +6,44 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/HwaI12/task-management-app/backend/models"
 	"golang.org/x/crypto/bcrypt"
 )
 
+type RegisterRequest struct {
+	Username     string `json:"username"`
+	Email        string `json:"email"`
+	PasswordHash string `json:"password_hash"`
+}
+
 func Register(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var user models.User
-		json.NewDecoder(r.Body).Decode(&user)
-
-		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.PasswordHash), bcrypt.DefaultCost)
+		var req RegisterRequest
+		err := json.NewDecoder(r.Body).Decode(&req)
 		if err != nil {
-			log.Println("Error hashing password:", err)
-			http.Error(w, "Error hashing password", http.StatusInternalServerError)
+			log.Printf("Invalid request payload: %v", err)
+			http.Error(w, "Invalid request payload", http.StatusBadRequest)
 			return
 		}
 
-		_, err = db.Exec("INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)", user.Username, user.Email, string(hashedPassword))
+		log.Printf("Registering user: %s, email: %s", req.Username, req.Email)
+
+		// パスワードのハッシュ化
+		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.PasswordHash), bcrypt.DefaultCost)
 		if err != nil {
-			log.Println("Error saving user:", err)
+			log.Printf("Error hashing password: %v", err)
 			http.Error(w, "Error saving user", http.StatusInternalServerError)
 			return
 		}
 
+		query := "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)"
+		_, err = db.Exec(query, req.Username, req.Email, hashedPassword)
+		if err != nil {
+			log.Printf("Error saving user: %v", err)
+			http.Error(w, "Error saving user", http.StatusInternalServerError)
+			return
+		}
+
+		log.Println("User successfully registered.")
 		w.WriteHeader(http.StatusCreated)
 	}
 }

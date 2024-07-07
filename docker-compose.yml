@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 
 services:
   frontend:
@@ -17,15 +17,24 @@ services:
     env_file:
       - ./variables.env
     environment:
-      - DB_HOST=db
+      - MYSQL_HOST=db
+    depends_on:
+      db:
+        condition: service_healthy
 
   db:
     container_name: db
-    image: mysql
+    image: mysql:8.0
     volumes:
       - './db/data:/var/lib/mysql'
       - './db/my.cnf:/etc/mysql/conf.d/my.cnf'
+      - './db/init.sql:/docker-entrypoint-initdb.d/init.sql'
     env_file:
       - ./variables.env
     ports:
       - '3306:3306'
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

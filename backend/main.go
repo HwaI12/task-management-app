@@ -6,11 +6,11 @@ import (
 	"log"
 	"net/http"
 	"os"
-
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/gorilla/mux"
+	"time"
 
 	"github.com/HwaI12/task-management-app/backend/handlers"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/gorilla/mux"
 )
 
 var db *sql.DB
@@ -33,9 +33,21 @@ func main() {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", user, password, host, port, database)
 	log.Println("DSN:", dsn)
 
-	db, err = sql.Open("mysql", dsn)
+	// データベース接続をリトライ
+	for i := 0; i < 5; i++ {
+		db, err = sql.Open("mysql", dsn)
+		if err == nil {
+			err = db.Ping()
+			if err == nil {
+				log.Println("Successfully connected to the database.")
+				break
+			}
+		}
+		log.Printf("Failed to connect to database. Retrying in 5 seconds... (%d/5)\n", i+1)
+		time.Sleep(5 * time.Second)
+	}
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
 	router := mux.NewRouter()
@@ -43,6 +55,8 @@ func main() {
 	router.HandleFunc("/login", handlers.Login(db)).Methods("POST")
 	router.HandleFunc("/delete", handlers.DeleteUser(db)).Methods("POST")
 
-	log.Println("Server started on :8000")
-	log.Fatal(http.ListenAndServe(":8000", router))
+	log.Println("Starting server on :8000")
+	if err := http.ListenAndServe(":8000", router); err != nil {
+		log.Fatalf("Failed to start server: %v", err)
+	}
 }
