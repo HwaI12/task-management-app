@@ -1,42 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
-
-type Data = {
-  message: string;
-};
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Register from './handlers/Register';
+import Login from './handlers/Login';
+import DeleteAccount from './handlers/DeleteAccount';
+import Home from './components/Home';
+import Logout from './handlers/Logout';
 
 function App() {
-  const [data, setData] = useState<Data | null>(null);
-
-  useEffect(() => {
-    axios.get<Data>(' http://localhost:8000/data')
-      .then((response) => {
-        setData(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
-  }, []);
-
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        {data && <p>{data.message}</p>}
-      </header>
+      <Router>
+        <nav>
+          <Link to="/register">新規登録</Link> | <Link to="/login">ログイン</Link> | <Link to="/logout">ログアウト</Link>
+        </nav>
+        <Routes>
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/delete" element={<DeleteAccount />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/logout" element={<Logout />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
