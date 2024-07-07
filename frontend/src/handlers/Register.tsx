@@ -1,8 +1,10 @@
-// components/Register.jsx
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+
+const isAuthenticated = (): boolean => {
+    return localStorage.getItem('authToken') !== null;
+};
 
 const Register = () => {
     const [username, setUsername] = useState('');
@@ -10,6 +12,13 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // Check authentication status on component mount
+        if (isAuthenticated()) {
+            navigate('/home');
+        }
+    }, [navigate]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -23,10 +32,11 @@ const Register = () => {
             if (response.status === 201) {
                 console.log('登録成功');
                 alert('ユーザー登録が完了しました。');
-
-                // Assuming you receive an authentication token in the response
-                // Set the token in localStorage (you need to implement this part)
+                
+                // Store authToken in localStorage
                 localStorage.setItem('authToken', response.data.token);
+                
+                // Redirect to home
                 navigate('/home');
             } else {
                 console.error('登録失敗:', response.status);
