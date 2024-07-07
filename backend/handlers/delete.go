@@ -3,15 +3,15 @@ package handlers
 import (
 	"database/sql"
 	"encoding/json"
+	"log"
 	"net/http"
 
+	// Import your user model package
 	"github.com/HwaI12/task-management-app/backend/models"
 )
 
-// DeleteUser はログインしているユーザーが自身のアカウントを削除するためのハンドラ関数です。
 func DeleteUser(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// リクエストボディからユーザー情報をデコード
 		var user models.User
 		err := json.NewDecoder(r.Body).Decode(&user)
 		if err != nil {
@@ -19,13 +19,26 @@ func DeleteUser(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		// データベースからユーザーを削除
-		_, err = db.Exec("DELETE FROM users WHERE email = ?", user.Email)
+		result, err := db.Exec("DELETE FROM users WHERE email = ?", user.Email)
 		if err != nil {
+			log.Printf("Error deleting user: %v", err)
 			http.Error(w, "ユーザーの削除に失敗しました", http.StatusInternalServerError)
 			return
 		}
 
+		rowsAffected, err := result.RowsAffected()
+		if err != nil {
+			log.Printf("Error getting rows affected: %v", err)
+			http.Error(w, "ユーザーの削除結果の確認に失敗しました", http.StatusInternalServerError)
+			return
+		}
+
+		if rowsAffected == 0 {
+			http.Error(w, "指定されたメールアドレスのユーザーが見つかりません", http.StatusNotFound)
+			return
+		}
+
 		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(map[string]string{"message": "ユーザーが正常に削除されました"})
 	}
 }

@@ -8,28 +8,24 @@ const Login: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setErrorMessage('');
         try {
             const response = await axios.post(
                 'http://localhost:8000/login',
-                {
-                    username,
-                    password,
-                },
-                { withCredentials: true } // クッキーを送信するために重要
+                { username, password },
+                { withCredentials: true }
             );
-
-            console.log('Response:', response);
-
-            if (response.status === 200) {
-                console.log('ログイン成功');
-                alert('ログインが成功しました');
-            } else {
-                console.error('ログイン失敗:', response.status);
-                setErrorMessage('ユーザー名またはパスワードが正しくありません');
-            }
+            console.log('ログイン成功:', response.data);
+            alert('ログインが完了しました。');
+            // ログイン成功時の処理（例：リダイレクト）を追加
         } catch (error) {
-            console.error('ネットワークエラー:', error);
-            setErrorMessage('ネットワークエラーが発生しました');
+            if (axios.isAxiosError(error)) {
+                console.error('ログインエラー:', error.response?.data || error.message);
+                setErrorMessage(error.response?.data?.message || 'ログインに失敗しました。');
+            } else {
+                console.error('予期せぬエラー:', error);
+                setErrorMessage('予期せぬエラーが発生しました。');
+            }
         }
     };
 

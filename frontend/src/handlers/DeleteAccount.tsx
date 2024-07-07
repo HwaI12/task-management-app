@@ -8,25 +8,24 @@ const DeleteAccount: React.FC = () => {
         e.preventDefault();
         try {
             const response = await fetch('http://localhost:8000/delete', {
-                method: 'DELETE',
+                method: 'POST', // Changed to POST to match backend
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ email }),
+                credentials: 'include', // Add this line to include cookies
             });
-
+    
             if (response.ok) {
-                console.log('退会成功');
+                console.log('アカウント削除成功');
                 alert('アカウントが正常に削除されました。');
-                // 退会成功時の追加の処理をここに追加
             } else {
-                console.error('退会失敗:', response.status);
-                // 退会失敗時の処理をここに追加
-                setErrorMessage('アカウントの削除に失敗しました。');
+                const errorData = await response.json();
+                console.error('アカウント削除失敗:', errorData.message);
+                setErrorMessage(errorData.message || 'アカウントの削除に失敗しました。');
             }
         } catch (error) {
             console.error('ネットワークエラー:', error);
-            // ネットワークエラー時の処理をここに追加
             setErrorMessage('ネットワークエラーが発生しました。');
         }
     };

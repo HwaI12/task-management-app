@@ -35,21 +35,22 @@ func Login(db *sql.DB) http.HandlerFunc {
 		var storedPassword string
 		err = db.QueryRow("SELECT password_hash FROM users WHERE username = ?", user.Username).Scan(&storedPassword)
 		if err != nil {
-			log.Printf("Failed to retrieve password hash: %v", err)
-			http.Error(w, "Invalid username or password", http.StatusUnauthorized)
+			if err == sql.ErrNoRows {
+				log.Printf("User not found: %s", user.Username)
+				http.Error(w, "Invalid username or password", http.StatusUnauthorized)
+			} else {
+				log.Printf("Database error: %v", err)
+				http.Error(w, "Internal server error", http.StatusInternalServerError)
+			}
 			return
 		}
 
-		log.Printf("Retrieved password hash from database: %s", storedPassword)
-
-		err = bcrypt.CompareHashAndPassword([]byte(storedPassword), []byte(user.PasswordHash))
+		err = bcrypt.CompareHashAndPassword([]byte(storedPassword), []byte(user.Password))
 		if err != nil {
-			log.Printf("Password comparison failed: %v", err)
+			log.Printf("Password comparison failed for user %s: %v", user.Username, err)
 			http.Error(w, "Invalid username or password", http.StatusUnauthorized)
 			return
 		}
-
-		log.Printf("User authenticated: %s", user.Username)
 
 		expirationTime := time.Now().Add(24 * time.Hour)
 		claims := &Claims{
@@ -67,16 +68,17 @@ func Login(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		// Set cookie with JWT token
 		http.SetCookie(w, &http.Cookie{
-			Name:    "token",
-			Value:   tokenString,
-			Expires: expirationTime,
-			Path:    "/",
+			Name:     "token",
+			Value:    tokenString,
+			Expires:  expirationTime,
+			Path:     "/",
+			HttpOnly: true,
+			Secure:   false, // 開発環境ではfalse、本番環境ではtrueに設定
+			SameSite: http.SameSiteLaxMode,
 		})
 
-		log.Printf("Generated and set token for user: %s", user.Username)
-
-		w.WriteHeader(http.StatusOK)
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]string{"message": "Login successful"})
 	}
 }
