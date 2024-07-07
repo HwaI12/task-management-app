@@ -1,4 +1,4 @@
-// handlers/register.go
+// handlers/user_register.go
 
 package handlers
 
