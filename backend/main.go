@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/HwaI12/task-management-app/handlers"
+	"github.com/HwaI12/task-management-app/backend/handlers"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 )

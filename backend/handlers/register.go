@@ -7,7 +7,7 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/task-management-app/backend/models"
+	"github.com/HwaI12/task-management-app/backend/models"
 )
 
 func Register(db *sql.DB) http.HandlerFunc {
