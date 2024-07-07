@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import Register from './handlers/Register';
 import Login from './handlers/Login';
 import DeleteAccount from './handlers/DeleteAccount';
+import Home from './components/Home';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/delete" element={<DeleteAccount />} />
+          <Route path="/home" element={<Home />} />
         </Routes>
       </BrowserRouter>
     </div>

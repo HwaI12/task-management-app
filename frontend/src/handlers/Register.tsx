@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Register: React.FC = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate(); // useNavigate フックを初期化
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -18,16 +20,15 @@ const Register: React.FC = () => {
 
             if (response.status === 201) {
                 console.log('登録成功');
-                // 登録成功時の処理を追加
                 alert('ユーザー登録が完了しました。');
+                // 登録成功後、/home にリダイレクト
+                navigate('/home');
             } else {
                 console.error('登録失敗:', response.status);
-                // エラー時の処理を追加
                 setErrorMessage('ユーザーの登録に失敗しました。');
             }
         } catch (error) {
             console.error('ネットワークエラー:', error);
-            // ネットワークエラー時の処理を追加
             setErrorMessage('ネットワークエラーが発生しました。');
         }
     };

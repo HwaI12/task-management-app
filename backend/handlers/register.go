@@ -9,26 +9,21 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// RegisterRequestは新規ユーザー登録のリクエストを表す
 type RegisterRequest struct {
 	Username     string `json:"username"`
 	Email        string `json:"email"`
 	PasswordHash string `json:"password_hash"`
 }
 
-// Registerは新規ユーザーを登録する
 func Register(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// リクエストデータの読み込みとパース
 		var req RegisterRequest
 		err := json.NewDecoder(r.Body).Decode(&req)
 		if err != nil {
-			log.Printf("リクエストのパースに失敗しました: %v", err)
+			log.Printf("リクエストの解析に失敗しました: %v", err)
 			http.Error(w, "リクエストの形式が正しくありません", http.StatusBadRequest)
 			return
 		}
-
-		log.Printf("ユーザーを登録中: ユーザー名: %s, メールアドレス: %s", req.Username, req.Email)
 
 		// パスワードのハッシュ化
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.PasswordHash), bcrypt.DefaultCost)
@@ -38,11 +33,11 @@ func Register(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		// ユーザーをデータベースに登録する前に、同じメールアドレスが存在しないか確認
+		// メールアドレスの重複チェック
 		var emailExists bool
 		err = db.QueryRow("SELECT EXISTS(SELECT 1 FROM users WHERE email = ?)", req.Email).Scan(&emailExists)
 		if err != nil {
-			log.Printf("ユーザーの存在確認中にエラーが発生しました: %v", err)
+			log.Printf("メールアドレスの重複チェック中にエラーが発生しました: %v", err)
 			http.Error(w, "ユーザーの登録に失敗しました", http.StatusInternalServerError)
 			return
 		}
@@ -61,7 +56,9 @@ func Register(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		log.Println("ユーザーが正常に登録されました.")
+		log.Println("ユーザーが正常に登録されました")
 		w.WriteHeader(http.StatusCreated)
+		// 必要に応じて、ユーザー情報や成功メッセージを返す
+		// json.NewEncoder(w).Encode("ユーザーが正常に登録されました")
 	}
 }
