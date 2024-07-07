@@ -135,3 +135,5 @@ Supervisor経由でコンテナを起動する。
 Supervisorを使うと、DBコンテナに接続できないせいでGoのコンテナが落ちても、プロセス監視によってまた再起動できるため。
 
 参考記事: [コンテナ間通信ができない場合の原因について](https://qiita.com/satofujino/items/cbfc0dcca36f48bd17d3)
+
+ISSUEを使ってタスクを管理するために、Templateを作成した

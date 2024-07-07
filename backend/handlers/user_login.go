@@ -1,4 +1,4 @@
-// handlers/login.go
+// handlers/user_login.go
 
 package handlers
 
@@ -36,6 +36,7 @@ func Login(db *sql.DB) http.HandlerFunc {
 
 		log.Printf("ユーザ名 %s でのログイン試行", user.Username)
 
+		// ユーザーのパスワードハッシュをデータベースから取得
 		var storedPassword string
 		err = db.QueryRow("SELECT password_hash FROM users WHERE username = ?", user.Username).Scan(&storedPassword)
 		if err != nil {
@@ -49,6 +50,7 @@ func Login(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
+		// パスワードの比較
 		err = bcrypt.CompareHashAndPassword([]byte(storedPassword), []byte(user.Password))
 		if err != nil {
 			log.Printf("ユーザ %s のパスワード比較に失敗しました: %v", user.Username, err)

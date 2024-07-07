@@ -1,4 +1,4 @@
-// handlers/delete_user.go
+// handlers/user_delete.go
 
 package handlers
 
