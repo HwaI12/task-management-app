@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Container, Form, Title, Label, Input, Button, LinkText } from '../styles/signinStyles';
+import { Container, Form, Title, Label, Input, Button, LinkText } from '../styles/UserAuthStyles';
 import { Link } from 'react-router-dom';
 
 const isAuthenticated = (): boolean => {

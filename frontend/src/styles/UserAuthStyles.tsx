@@ -1,4 +1,4 @@
-// signinStyles.tsx
+// UserAuthStyles.tsx
 
 import styled from 'styled-components';
 

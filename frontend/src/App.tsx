@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Taskmanagement from './components/Taskmanagement';
 import Register from './handlers/Register';
 import Login from './handlers/Login';
 import DeleteAccount from './handlers/DeleteAccount';
@@ -11,10 +12,8 @@ function App() {
   return (
     <div className="App">
       <Router>
-        {/* <nav>
-          <Link to="/register">新規登録</Link> | <Link to="/login">ログイン</Link> | <Link to="/logout">ログアウト</Link>
-        </nav> */}
         <Routes>
+          <Route path="/" element={<Taskmanagement />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/delete" element={<DeleteAccount />} />
