@@ -85,8 +85,8 @@ const DeleteAccount: React.FC = () => {
     };
 
     if (!isAuthenticated()) {
-        // If not authenticated, redirect to /login
-        return <Navigate to="/login" replace />;
+        // If not authenticated, redirect to /Signin
+        return <Navigate to="/Signin" replace />;
     }
 
     return (

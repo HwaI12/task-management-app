@@ -11,7 +11,7 @@ const Home: React.FC = () => {
     // Check authentication status
     if (!isAuthenticated()) {
         // If not authenticated, redirect to /login
-        return <Navigate to="/login" replace />;
+        return <Navigate to="/Signin" replace />;
     }
 
     // If authenticated, render the Home component

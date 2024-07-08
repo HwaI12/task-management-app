@@ -8,11 +8,11 @@ const TaskManagement: React.FC = () => {
     const navigate = useNavigate();
 
     const handleCreateAccount = () => {
-        navigate('/register');
+        navigate('/Signup');
     };
 
     const handleSignIn = () => {
-        navigate('/login');
+        navigate('/Signin');
     };
 
     return (

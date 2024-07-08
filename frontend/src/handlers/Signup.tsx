@@ -8,8 +8,10 @@ const isAuthenticated = (): boolean => {
     return localStorage.getItem('authToken') !== null;
 };
 
-const Login: React.FC = () => {
-    const [user_id, setUser_id] = useState('');
+const Signup: React.FC = () => {
+    const [user_id, setUserId] = useState('');
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
@@ -24,57 +26,77 @@ const Login: React.FC = () => {
         e.preventDefault();
         setErrorMessage('');
         try {
-            const response = await axios.post(
-                'http://localhost:8000/login',
-                { user_id, password },
-                { withCredentials: true }
-            );
-            console.log('Login successful:', response.data);
+            const response = await axios.post('http://localhost:8000/register', {
+                user_id,
+                username,
+                email,
+                password_hash: password,
+            });
+
+            console.log('Resister successful:', response.data);
             localStorage.setItem('authToken', response.data.token);
             navigate('/home');
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                console.error('Login error:', error.response?.data || error.message);
-                setErrorMessage(error.response?.data?.message || 'ログインに失敗しました。');
+                console.error('Signup error:', error.response?.data || error.message);
+                setErrorMessage(error.response?.data?.message || '登録に失敗しました。');
             } else {
                 console.error('Unexpected error:', error);
                 setErrorMessage('予期せぬエラーが発生しました。');
             }
         }
-    };
+    }
 
     return (
         <Container>
             <Form>
-                <Title>ログイン</Title>
-                {errorMessage && <div style={{ color: 'red', marginBottom: '1rem' }}>{errorMessage}</div>}
+                <Title>新規登録</Title>
+                {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
                 <form onSubmit={handleSubmit}>
                     <Label htmlFor="user_id">ユーザーID</Label>
                     <Input
                         id="user_id"
                         type="text"
-                        placeholder="ユーザーIDを入力してください"
+                        placeholder="tnk123"
                         value={user_id}
-                        onChange={(e) => setUser_id(e.target.value)}
+                        onChange={(e) => setUserId(e.target.value)}
+                        required
+                    />
+                    <Label htmlFor="username">ユーザー名</Label>
+                    <Input
+                        id="username"
+                        type="text"
+                        placeholder="tanaka"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                    />
+                    <Label htmlFor="password">メールアドレス</Label>
+                    <Input
+                        id="email"
+                        type="email"
+                        placeholder="example@gmail.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         required
                     />
                     <Label htmlFor="password">パスワード</Label>
                     <Input
                         id="password"
                         type="password"
-                        placeholder="パスワードを入力してください"
+                        placeholder="password123"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
-                    <Button type="submit">ログイン</Button>
+                    <Button type="submit">登録</Button>
                 </form>
                 <LinkText>
-                    <Link to="/register">会員登録はこちら</Link>
+                    <Link to="/Signin">ログインはこちら</Link>
                 </LinkText>
             </Form>
         </Container>
     );
 };
 
-export default Login;
+export default Signup;

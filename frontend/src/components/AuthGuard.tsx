@@ -13,7 +13,7 @@ interface AuthGuardProps {
 
 const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
     if (!isAuthenticated()) {
-        return <Navigate to="/login" replace />;
+        return <Navigate to="/Signin" replace />;
     }
 
     return <>{children}</>;
