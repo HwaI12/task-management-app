@@ -19,7 +19,7 @@ var jwtKey = []byte("my_secret_key")
 
 // Claims はJWTのクレームを表す構造体です
 type Claims struct {
-	Username string `json:"username"`
+	User_id string `json:"user_id"`
 	jwt.StandardClaims
 }
 
@@ -34,14 +34,14 @@ func Login(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		log.Printf("ユーザ名 %s でのログイン試行", user.Username)
+		log.Printf("ユーザ名 %s でのログイン試行", user.User_id)
 
 		// ユーザーのパスワードハッシュをデータベースから取得
 		var storedPassword string
-		err = db.QueryRow("SELECT password_hash FROM users WHERE username = ?", user.Username).Scan(&storedPassword)
+		err = db.QueryRow("SELECT password_hash FROM users WHERE user_id = ?", user.User_id).Scan(&storedPassword)
 		if err != nil {
 			if err == sql.ErrNoRows {
-				log.Printf("ユーザが見つかりません: %s", user.Username)
+				log.Printf("ユーザが見つかりません: %s", user.User_id)
 				http.Error(w, "ユーザ名またはパスワードが正しくありません", http.StatusUnauthorized)
 			} else {
 				log.Printf("データベースエラー: %v", err)
@@ -53,7 +53,7 @@ func Login(db *sql.DB) http.HandlerFunc {
 		// パスワードの比較
 		err = bcrypt.CompareHashAndPassword([]byte(storedPassword), []byte(user.Password))
 		if err != nil {
-			log.Printf("ユーザ %s のパスワード比較に失敗しました: %v", user.Username, err)
+			log.Printf("ユーザ %s のパスワード比較に失敗しました: %v", user.User_id, err)
 			http.Error(w, "ユーザ名またはパスワードが正しくありません", http.StatusUnauthorized)
 			return
 		}
@@ -61,7 +61,7 @@ func Login(db *sql.DB) http.HandlerFunc {
 		// トークンの有効期限を設定
 		expirationTime := time.Now().Add(24 * time.Hour)
 		claims := &Claims{
-			Username: user.Username,
+			User_id: user.User_id,
 			StandardClaims: jwt.StandardClaims{
 				ExpiresAt: expirationTime.Unix(),
 			},
@@ -83,7 +83,7 @@ func Login(db *sql.DB) http.HandlerFunc {
 			Expires:  expirationTime,
 			Path:     "/",
 			HttpOnly: true,
-			Secure:   false, // 開発環境ではfalse、本番環境ではtrueに設定
+			Secure:   true,
 			SameSite: http.SameSiteLaxMode,
 		})
 

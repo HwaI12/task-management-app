@@ -7,6 +7,7 @@ const isAuthenticated = (): boolean => {
 };
 
 const Register: React.FC = () => {
+    const [user_id, setUserId] = useState('');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -24,6 +25,7 @@ const Register: React.FC = () => {
         setErrorMessage('');
         try {
             const response = await axios.post('http://localhost:8000/register', {
+                user_id,
                 username,
                 email,
                 password_hash: password,
@@ -51,6 +53,13 @@ const Register: React.FC = () => {
             <h2>新規登録</h2>
             {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
             <form onSubmit={handleSubmit}>
+                <input
+                    type="text"
+                    placeholder="ユーザーID"
+                    value={user_id}
+                    onChange={(e) => setUserId(e.target.value)}
+                    required
+                />
                 <input
                     type="text"
                     placeholder="ユーザー名"

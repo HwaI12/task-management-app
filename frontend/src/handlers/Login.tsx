@@ -7,7 +7,7 @@ const isAuthenticated = (): boolean => {
 };
 
 const Login: React.FC = () => {
-    const [username, setUsername] = useState('');
+    const [user_id, setUser_id] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
@@ -24,7 +24,7 @@ const Login: React.FC = () => {
         try {
             const response = await axios.post(
                 'http://localhost:8000/login',
-                { username, password },
+                { user_id, password },
                 { withCredentials: true }
             );
             console.log('Login successful:', response.data);
@@ -49,9 +49,9 @@ const Login: React.FC = () => {
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
-                    placeholder="ユーザー名"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="ユーザーID"
+                    value={user_id}
+                    onChange={(e) => setUser_id(e.target.value)}
                     required
                 />
                 <input
