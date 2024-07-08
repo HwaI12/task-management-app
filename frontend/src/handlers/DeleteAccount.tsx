@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 
 const isAuthenticated = (): boolean => {
-    // Check if the user is authenticated
     return localStorage.getItem('authToken') !== null;
 };
 
@@ -86,8 +85,8 @@ const DeleteAccount: React.FC = () => {
     };
 
     if (!isAuthenticated()) {
-        // If not authenticated, redirect to /login
-        return <Navigate to="/login" replace />;
+        // If not authenticated, redirect to /Signin
+        return <Navigate to="/Signin" replace />;
     }
 
     return (
