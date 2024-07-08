@@ -19,8 +19,8 @@ const TaskManagement: React.FC = () => {
         <PageContainer>
             <FormContainer>
                 <Title>時間を<br></br>有効活用しよう</Title>
-                <SubTitle>AIを活用したワークスペースで成果物を共有しましょう</SubTitle>
-                <Button1 onClick={handleCreateAccount}>Create account</Button1>
+                <SubTitle>AIを活用したワークスペースで<br></br>成果物を共有しましょう</SubTitle>
+                <Button1 onClick={handleCreateAccount}>Sign up</Button1>
                 <p>すでにアカウントをお持ちですか？</p>
                 <Button2 onClick={handleSignIn}>Sign in</Button2>
             </FormContainer>

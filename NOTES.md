@@ -198,6 +198,8 @@ Supervisorを使うと、DBコンテナに接続できないせいでGoのコン
   - `db/database.go`: データベースに接続
   - `router/router.go`: ルーティング
 ### UI/UX修正
+- `/delete`はいつかやる。今はまだやるつもりなし
+- `/`, `/signin`, `/signup`, `/logout`のUIを修正
 
 ## 画面設計
 ### 認証関連画面
