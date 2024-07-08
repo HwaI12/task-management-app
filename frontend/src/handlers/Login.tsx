@@ -31,7 +31,7 @@ const Login: React.FC = () => {
             );
             console.log('Login successful:', response.data);
             localStorage.setItem('authToken', response.data.token);
-            navigate('/home'); // Navigate to /home on successful login
+            navigate('/home');
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 console.error('Login error:', error.response?.data || error.message);
