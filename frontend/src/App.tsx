@@ -19,11 +19,15 @@ const App: React.FC = () => {
           <Route path="/Signin" element={<Signin />} />
           <Route path="/delete" element={<DeleteAccount />} />
           <Route path="/home" element={
-                    <AuthGuard>
-                        <Home />
-                    </AuthGuard>
-                } />
-          <Route path="/logout" element={<Logout />} />
+            <AuthGuard>
+              <Home />
+            </AuthGuard>
+          } />
+          <Route path="/logout" element={
+            <AuthGuard>
+              <Logout />
+            </AuthGuard>}
+          />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
