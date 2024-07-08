@@ -8,7 +8,7 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #f1f1f1;
+  background-color: #fff;
   padding: 20px;
   transition: background-color 0.3s ease-in-out;
   box-sizing: border-box;
@@ -20,11 +20,11 @@ export const Form = styled.div`
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 400px; /* 最大幅を設定 */
+  max-width: 400px;
   border: 1px solid #d9dae2;
   box-sizing: border-box;
   transition: box-shadow 0.3s ease-in-out;
-  margin: auto; /* 要素を水平方向に中央に配置 */
+  margin: auto;
 `;
 
 
@@ -72,7 +72,7 @@ export const Button = styled.button`
   transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
 
   &:hover {
-    background-color: #e0d569;
+    background-color: #EBD961;
   }
 
   &:disabled {

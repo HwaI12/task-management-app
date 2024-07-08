@@ -1,38 +1,31 @@
-// LoginPageStyles.tsx
+// FirstPageStyles.tsx
 
 import styled from 'styled-components';
 
 export const PageContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  height: 100vh;
+  justify-content: center;
+  min-height: 100vh;
   background-color: #fff;
   padding: 20px;
-`;
-
-export const LogoContainer = styled.div`
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 5rem;
-  font-weight: bold;
-  color: #000;
+  transition: background-color 0.3s ease-in-out;
+  box-sizing: border-box;
 `;
 
 export const FormContainer = styled.div`
-  flex: 1;
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 100%;
   max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  box-sizing: border-box;
+  margin: auto;
 `;
 
 export const Title = styled.h1`
-  font-size: 2rem;
+  font-size: 3rem;
   margin-bottom: 1.5rem;
   color: #333;
   text-align: center;
@@ -41,38 +34,41 @@ export const Title = styled.h1`
 export const SubTitle = styled.p`
   font-size: 1.25rem;
   margin-bottom: 1.5rem;
+  font-weight: bold;
   color: #333;
   text-align: center;
 `;
 
-export const Button = styled.button`
+export const Button1 = styled.button`
   width: 100%;
+  height: 3rem;
   padding: 0.75rem;
   margin-bottom: 1rem;
   border: none;
   border-radius: 5px;
-  background-color: #e0e0e0;
+  background-color: #eede77;
   color: #333;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
 
   &:hover {
-    background-color: #ccc;
+    background-color: #EBD961;
   }
-`;
+  `;
 
-export const LinkText = styled.p`
-  color: #333;
-  font-size: 0.875rem;
-  text-align: center;
+export const Button2 = styled.button`
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 2px solid #eede77;
+  background-color: #fff;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 
-  a {
-    color: #007bff;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
+  &:hover {
+    background-color: #f9f9f9;
   }
 `;
