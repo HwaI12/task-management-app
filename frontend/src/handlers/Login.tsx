@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Container, Form, Title, Label, Input, Button, LinkText } from '../styles/signinStyles';
+import { Link } from 'react-router-dom';
 
 const isAuthenticated = (): boolean => {
     return localStorage.getItem('authToken') !== null;
@@ -28,9 +30,8 @@ const Login: React.FC = () => {
                 { withCredentials: true }
             );
             console.log('Login successful:', response.data);
-            alert('ログインが完了しました。');
             localStorage.setItem('authToken', response.data.token);
-            navigate('/home');
+            navigate('/home'); // Navigate to /home on successful login
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 console.error('Login error:', error.response?.data || error.message);
@@ -43,27 +44,36 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div>
-            <h2>ログイン</h2>
-            {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    placeholder="ユーザーID"
-                    value={user_id}
-                    onChange={(e) => setUser_id(e.target.value)}
-                    required
-                />
-                <input
-                    type="password"
-                    placeholder="パスワード"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-                <button type="submit">ログイン</button>
-            </form>
-        </div>
+        <Container>
+            <Form>
+                <Title>ログイン</Title>
+                {errorMessage && <div style={{ color: 'red', marginBottom: '1rem' }}>{errorMessage}</div>}
+                <form onSubmit={handleSubmit}>
+                    <Label htmlFor="user_id">ユーザーID</Label>
+                    <Input
+                        id="user_id"
+                        type="text"
+                        placeholder="ユーザーIDを入力してください"
+                        value={user_id}
+                        onChange={(e) => setUser_id(e.target.value)}
+                        required
+                    />
+                    <Label htmlFor="password">パスワード</Label>
+                    <Input
+                        id="password"
+                        type="password"
+                        placeholder="パスワードを入力してください"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                    <Button type="submit">ログイン</Button>
+                </form>
+                <LinkText>
+                    <Link to="/register">会員登録はこちら</Link>
+                </LinkText>
+            </Form>
+        </Container>
     );
 };
 
