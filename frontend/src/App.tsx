@@ -1,13 +1,14 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Taskmanagement from './components/Taskmanagement';
-import Signup from './handlers/Signup';
-import Signin from './handlers/Signin';
-import DeleteAccount from './handlers/DeleteAccount';
-import Home from './components/Home';
-import Logout from './handlers/Logout';
-import AuthGuard from './components/AuthGuard';
+import Taskmanagement from './components/common/Taskmanagement';
+import Signup from './components/auth/Signup';
+import Signin from './components/auth/Signin';
+import DeleteAccount from './components/auth/DeleteAccount';
+import Home from './components/common/Home';
+import Logout from './components/auth/Logout';
+import AuthGuard from './components/common/AuthGuard';
+import Profile from './components/user/Profile';
 
 const App: React.FC = () => {
   return (
@@ -17,15 +18,20 @@ const App: React.FC = () => {
           <Route path="/" element={<Taskmanagement />} />
           <Route path="/Signup" element={<Signup />} />
           <Route path="/Signin" element={<Signin />} />
-          <Route path="/delete" element={<DeleteAccount />} />
-          <Route path="/home" element={
+          <Route path="/Delete" element={<DeleteAccount />} />
+          <Route path="/Home" element={
             <AuthGuard>
               <Home />
             </AuthGuard>
           } />
-          <Route path="/logout" element={
+          <Route path="/Logout" element={
             <AuthGuard>
               <Logout />
+            </AuthGuard>}
+          />
+          <Route path="/:userId" element={
+            <AuthGuard>
+              <Profile />
             </AuthGuard>}
           />
           <Route path="*" element={<Navigate to="/" />} />
