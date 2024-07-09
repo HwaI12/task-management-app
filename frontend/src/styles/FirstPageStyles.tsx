@@ -10,7 +10,7 @@ export const PageContainer = styled.div`
   min-height: 100vh;
   background-color: #fff;
   padding: 20px;
-  transition: background-color 0.3s ease-in-out;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
   box-sizing: border-box;
 `;
 
@@ -66,7 +66,7 @@ export const Button2 = styled.button`
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
 
   &:hover {
     background-color: #f9f9f9;

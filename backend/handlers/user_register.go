@@ -8,22 +8,17 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/HwaI12/task-management-app/backend/models"
 	"golang.org/x/crypto/bcrypt"
 )
 
 // RegisterRequest は登録リクエストのJSON構造体です
-type RegisterRequest struct {
-	UserID       string `json:"user_id"`
-	Username     string `json:"username"`
-	Email        string `json:"email"`
-	PasswordHash string `json:"password_hash"`
-}
 
 // Register は新規ユーザー登録を処理するハンドラ関数です
 func Register(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// リクエストボディをパース
-		var req RegisterRequest
+		var req models.RegisterRequest
 		err := json.NewDecoder(r.Body).Decode(&req)
 		if err != nil {
 			log.Printf("リクエストのパースに失敗しました: %v", err)

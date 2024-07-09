@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Container, Form, Title, Label, Input, Button, LinkText } from '../styles/UserAuthStyles';
+import { Container, Form, Title, Label, Input, Button, LinkText } from '../../styles/UserAuthStyles';
 import { Link } from 'react-router-dom';
 
 const isAuthenticated = (): boolean => {
@@ -31,6 +31,8 @@ const Signin: React.FC = () => {
             );
             console.log('Signin successful:', response.data);
             localStorage.setItem('authToken', response.data.token);
+            localStorage.setItem('userId', user_id);
+            localStorage.setItem('username', response.data.username);
             navigate('/home');
         } catch (error) {
             if (axios.isAxiosError(error)) {

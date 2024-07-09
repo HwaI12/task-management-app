@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PageContainer, FormContainer, Title, SubTitle, Button1, Button2} from '../styles/FirstPageStyles';
+import { PageContainer, FormContainer, Title, SubTitle, Button1, Button2} from '../../styles/FirstPageStyles';
 
 const TaskManagement: React.FC = () => {
     const navigate = useNavigate();
