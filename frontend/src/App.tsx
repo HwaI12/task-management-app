@@ -12,6 +12,7 @@ import Profile from './components/user/Profile';
 import CreateTask from './components/user/CreateTask';
 import NotFound from './components/common/NotFound';
 import Notifications from './components/user/Notifications';
+import ViewTask from './components/user/ViewTask';
 
 const App: React.FC = () => {
   return (
@@ -40,11 +41,16 @@ const App: React.FC = () => {
           <Route path="/:userId/addtask" element={
             <AuthGuard requireMatch={true}>
               <CreateTask />
-            </AuthGuard>} 
+            </AuthGuard>}
           />
           <Route path="/Notifications" element={
             <AuthGuard>
               <Notifications />
+            </AuthGuard>
+          } />
+          <Route path="/:userId/task/:taskId" element={
+            <AuthGuard>
+              <ViewTask />
             </AuthGuard>
           } />
           <Route path="*" element={<NotFound />} /> {/* 404ページのルートを追加 */}
