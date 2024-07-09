@@ -10,7 +10,8 @@ import Logout from './components/auth/Logout';
 import AuthGuard from './components/common/AuthGuard';
 import Profile from './components/user/Profile';
 import CreateTask from './components/user/CreateTask';
-import NotFound from './components/common/NotFound'; // NotFoundコンポーネントをインポート
+import NotFound from './components/common/NotFound';
+import Notifications from './components/user/Notifications';
 
 const App: React.FC = () => {
   return (
@@ -36,10 +37,17 @@ const App: React.FC = () => {
               <Profile />
             </AuthGuard>}
           />
-          <Route path="/:userId/addtask" element={<AuthGuard>
-            <CreateTask />
-          </AuthGuard>} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/:userId/addtask" element={
+            <AuthGuard requireMatch={true}>
+              <CreateTask />
+            </AuthGuard>} 
+          />
+          <Route path="/Notifications" element={
+            <AuthGuard>
+              <Notifications />
+            </AuthGuard>
+          } />
+          <Route path="*" element={<NotFound />} /> {/* 404ページのルートを追加 */}
         </Routes>
       </Router>
     </div>

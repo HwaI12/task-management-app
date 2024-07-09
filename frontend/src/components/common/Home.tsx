@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate, Link } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import { ContentContainer } from '../../styles/SidebarStyles';
 
@@ -11,7 +11,7 @@ const isAuthenticated = (): boolean => {
 // いいね機能があるといいかも
 
 const Home: React.FC = () => {
-    const userId = localStorage.getItem('userId');
+    // const userId = localStorage.getItem('userId');
 
     // ユーザーが認証されていない場合はログインページにリダイレクト
     if (!isAuthenticated()) {
@@ -24,11 +24,12 @@ const Home: React.FC = () => {
             <ContentContainer>
                 <h2>Home Page</h2>
                 <p>Welcome to the Home Page!</p>
-                {userId ? (
+                <p>追加予定</p>
+                {/* {userId ? (
                     <Link to={`/${userId}`}>プロフィールはこちら</Link>
                 ) : (
                     <p>ユーザー情報が見つかりません。</p>
-                )}
+                )} */}
             </ContentContainer>
         </div>
     );

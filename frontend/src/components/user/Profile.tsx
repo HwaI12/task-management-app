@@ -19,10 +19,17 @@ interface User {
     username: string;
 }
 
+// 認証されたユーザーIDを取得する関数
+const getAuthenticatedUserId = (): string | null => {
+    return localStorage.getItem('userId');
+};
+
 const Profile: React.FC = () => {
     const { userId } = useParams<{ userId: string }>();
     const [tasks, setTasks] = useState<Task[] | null>(null);
     const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState(true);
+    const authenticatedUserId = getAuthenticatedUserId();
 
     useEffect(() => {
         const fetchTasks = async () => {
@@ -40,12 +47,22 @@ const Profile: React.FC = () => {
                 setUser(response.data);
             } catch (error) {
                 console.error('ユーザー情報の取得に失敗しました:', error);
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchTasks();
         fetchUser();
     }, [userId]);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (!user) {
+        return <div>このアカウントは存在しません</div>;
+    }
 
     // タスクを優先度とステータスごとに分類して表示
     const renderTasks = (priority: string, status: string) => {
@@ -67,63 +84,72 @@ const Profile: React.FC = () => {
             <Sidebar />
             <ContentContainer>
                 <UserContainer>
-                    <TitleUserName>{user?.username}</TitleUserName>
+                    <TitleUserName>{user.username}</TitleUserName>
                     <TitleUserID>@{userId}</TitleUserID>
                 </UserContainer>
 
-                <PrioritySection>
-                    <h3>高優先度</h3>
-                    <StatusSection>
-                        <div>
-                            <h4>未着手</h4>
-                            {renderTasks('高', '未着手')}
-                        </div>
-                        <div>
-                            <h4>進行中</h4>
-                            {renderTasks('高', '進行中')}
-                        </div>
-                        <div>
-                            <h4>完了</h4>
-                            {renderTasks('高', '完了')}
-                        </div>
-                    </StatusSection>
-                </PrioritySection>
+                {userId === authenticatedUserId ? (
+                    <>
+                        <PrioritySection>
+                            <h3>高優先度</h3>
+                            <StatusSection>
+                                <div>
+                                    <h4>未着手</h4>
+                                    {renderTasks('高', '未着手')}
+                                </div>
+                                <div>
+                                    <h4>進行中</h4>
+                                    {renderTasks('高', '進行中')}
+                                </div>
+                                <div>
+                                    <h4>完了</h4>
+                                    {renderTasks('高', '完了')}
+                                </div>
+                            </StatusSection>
+                        </PrioritySection>
 
-                <PrioritySection>
-                    <h3>中優先度</h3>
-                    <StatusSection>
-                        <div>
-                            <h4>未着手</h4>
-                            {renderTasks('中', '未着手')}
-                        </div>
-                        <div>
-                            <h4>進行中</h4>
-                            {renderTasks('中', '進行中')}
-                        </div>
-                        <div>
-                            <h4>完了</h4>
-                            {renderTasks('中', '完了')}
-                        </div>
-                    </StatusSection>
-                </PrioritySection>
+                        <PrioritySection>
+                            <h3>中優先度</h3>
+                            <StatusSection>
+                                <div>
+                                    <h4>未着手</h4>
+                                    {renderTasks('中', '未着手')}
+                                </div>
+                                <div>
+                                    <h4>進行中</h4>
+                                    {renderTasks('中', '進行中')}
+                                </div>
+                                <div>
+                                    <h4>完了</h4>
+                                    {renderTasks('中', '完了')}
+                                </div>
+                            </StatusSection>
+                        </PrioritySection>
 
-                <PrioritySection>
-                    <h3>低優先度</h3>
-                    <StatusSection>
-                        <div>
-                            <h4>未着手</h4>
-                            {renderTasks('低', '未着手')}
-                        </div>
-                        <div>
-                            <h4>進行中</h4>
-                            {renderTasks('低', '進行中')}
-                        </div>
-                        <div>
-                            <h4>完了</h4>
-                            {renderTasks('低', '完了')}
-                        </div>
-                    </StatusSection>
-                </PrioritySection>
+                        <PrioritySection>
+                            <h3>低優先度</h3>
+                            <StatusSection>
+                                <div>
+                                    <h4>未着手</h4>
+                                    {renderTasks('低', '未着手')}
+                                </div>
+                                <div>
+                                    <h4>進行中</h4>
+                                    {renderTasks('低', '進行中')}
+                                </div>
+                                <div>
+                                    <h4>完了</h4>
+                                    {renderTasks('低', '完了')}
+                                </div>
+                            </StatusSection>
+                        </PrioritySection>
+                    </>
+                ) : (
+                    <div>
+                        <h3>制作物</h3>
+                        <p>ここに認証されたユーザー以外のコンテンツが表示されます。</p>
+                    </div>
+                )}
             </ContentContainer>
         </div>
     );
