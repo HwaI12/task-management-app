@@ -5,9 +5,10 @@ import {
     IoPersonOutline,
     IoLogOutOutline
 } from "react-icons/io5";
+import { Link } from 'react-router-dom';
 
 export const SidebarContainer = styled.div`
-    width: 60px;
+    width: 70px;
     background-color: #f8f8f8;
     height: 100vh;
     box-shadow: 2px 0 5px rgba(0,0,0,0.1);
@@ -20,7 +21,6 @@ export const SidebarContainer = styled.div`
 `;
 
 export const SidebarHeader = styled.div`
-    padding: 20px;
     background-color: #fff;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     display: flex;
@@ -53,9 +53,9 @@ export const MenuItem = styled.div`
 `;
 
 export const SidebarLogoImg = styled.img`
-    width: 50px;
-    height: auto; /* 高さを自動調整 */
-    object-fit: cover; /* アスペクト比を維持 */
+    width: 80px;
+    height: 70px;
+    object-fit: cover;
 `;
 
 export const StyledIoHomeOutline = styled(IoHomeOutline)`
@@ -82,4 +82,9 @@ export const ContentContainer = styled.div`
     margin-left: 60px;
     padding: 20px;
     transition: margin-left 0.3s ease;
+`;
+
+export const StyledLink = styled(Link)`
+    color: inherit;
+    text-decoration: none;
 `;

@@ -8,11 +8,14 @@ import {
     StyledIoHomeOutline,
     StyledIoNotificationsOutline,
     StyledIoPersonOutline,
-    StyledIoLogOutOutline
+    StyledIoLogOutOutline,
+    StyledLink
 } from '../../styles/SidebarStyles';
 import logo from '../../assets/T.png';
 
 const Sidebar: React.FC = () => {
+    const userId = localStorage.getItem('userId');
+
     return (
         <SidebarContainer>
             <SidebarHeader>
@@ -20,16 +23,18 @@ const Sidebar: React.FC = () => {
             </SidebarHeader>
             <SidebarMenu>
                 <MenuItem>
-                    <StyledIoHomeOutline />
+                    <StyledLink to="/home"><StyledIoHomeOutline /></StyledLink>
                 </MenuItem>
                 <MenuItem>
-                    <StyledIoNotificationsOutline />
+                    <StyledLink to="/"><StyledIoNotificationsOutline /></StyledLink>
                 </MenuItem>
                 <MenuItem>
-                    <StyledIoPersonOutline />
+                    {userId && (
+                        <StyledLink to={`/${userId}`}><StyledIoPersonOutline /></StyledLink>
+                    )}
                 </MenuItem>
                 <MenuItem>
-                    <StyledIoLogOutOutline />
+                    <StyledLink to="/logout"><StyledIoLogOutOutline /></StyledLink>
                 </MenuItem>
             </SidebarMenu>
         </SidebarContainer>
