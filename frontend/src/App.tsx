@@ -9,6 +9,7 @@ import Home from './components/common/Home';
 import Logout from './components/auth/Logout';
 import AuthGuard from './components/common/AuthGuard';
 import Profile from './components/user/Profile';
+import CreateTask from './components/user/CreateTask';
 
 const App: React.FC = () => {
   return (
@@ -34,6 +35,9 @@ const App: React.FC = () => {
               <Profile />
             </AuthGuard>}
           />
+          <Route path="/:userId/addtask" element={<AuthGuard>
+            <CreateTask />
+          </AuthGuard>} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
