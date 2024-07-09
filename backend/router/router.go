@@ -23,9 +23,10 @@ func SetupRouter(db *sql.DB) http.Handler {
 	})
 
 	// ハンドラ関数の登録
-	router.HandleFunc("/register", handlers.Register(db)).Methods("POST") // POST /register に対するハンドラ
-	router.HandleFunc("/login", handlers.Login(db)).Methods("POST")       // POST /login に対するハンドラ
-	router.HandleFunc("/delete", handlers.DeleteUser(db)).Methods("POST") // POST /delete に対するハンドラ
+	router.HandleFunc("/register", handlers.Register(db)).Methods("POST")    // POST /register に対するハンドラ
+	router.HandleFunc("/login", handlers.Login(db)).Methods("POST")          // POST /login に対するハンドラ
+	router.HandleFunc("/delete", handlers.DeleteUser(db)).Methods("POST")    // POST /delete に対するハンドラ
+	router.HandleFunc("/api/tasks", handlers.CreateTask(db)).Methods("POST") // POST /api/tasks に対するハンドラ
 
 	// CORSミドルウェアをルーターに適用
 	handler := corsHandler.Handler(router)

@@ -7,6 +7,9 @@ const isAuthenticated = (): boolean => {
     return localStorage.getItem('authToken') !== null;
 };
 
+// みんなの制作物が表示されるホームページ
+// いいね機能があるといいかも
+
 const Home: React.FC = () => {
     const userId = localStorage.getItem('userId');
 
