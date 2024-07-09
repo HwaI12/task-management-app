@@ -16,7 +16,6 @@ const CreateTask: React.FC = () => {
     const [priority, setPriority] = useState('高');
     const [status, setStatus] = useState('未着手');
     const [purpose, setPurpose] = useState('');
-    const [description, setDescription] = useState('');
     const [steps, setSteps] = useState('');
     const [memo, setMemo] = useState('');
     const [remarks, setRemarks] = useState('');
@@ -40,14 +39,14 @@ const CreateTask: React.FC = () => {
                 priority,
                 status,
                 purpose,
-                description,
                 steps,
                 memo,
                 remarks,
             });
-
+    
             console.log('登録成功:', response.data);
-            navigate(`/${userId}`);
+            const newTaskId = response.data.id;
+            navigate(`/${userId}/task/${newTaskId}`);
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 console.error('登録エラー:', error.response?.data || error.message);
@@ -58,6 +57,7 @@ const CreateTask: React.FC = () => {
             }
         }
     };
+    
 
     return (
         <div>
@@ -113,15 +113,6 @@ const CreateTask: React.FC = () => {
                                 <option value="進行中">進行中</option>
                                 <option value="完了">完了</option>
                             </Select>
-                        </InputIconWrapper>
-                    </FormGroup>
-                    <FormGroup>
-                        <SubtitleLabel>説明</SubtitleLabel>
-                        <InputIconWrapper>
-                            <StyledTextarea
-                                value={description}
-                                onChange={(e) => setDescription(e.target.value)}
-                            ></StyledTextarea>
                         </InputIconWrapper>
                     </FormGroup>
                     <FormGroup>

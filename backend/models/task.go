@@ -5,10 +5,10 @@ type Task struct {
 	ID       int    `json:"id"`
 	UserID   string `json:"user_id"`
 	Title    string `json:"title"`
+	Purpose  string `json:"purpose"`
 	Deadline string `json:"deadline"`
 	Priority string `json:"priority"`
 	Status   string `json:"status"`
-	Purpose  string `json:"purpose"`
 	Steps    string `json:"steps"`
 	Memo     string `json:"memo"`
 	Remarks  string `json:"remarks"`

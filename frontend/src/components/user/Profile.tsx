@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import Sidebar from '../common/Sidebar';
 import { ContentContainer, PrioritySection, StatusSection, TaskCard, UserContainer, TitleUserName, TitleUserID } from '../../styles/ProfileStyles';
 
 // Taskの型定義
 interface Task {
+    id: number; // IDフィールドは数値であることが一般的
     title: string;
-    description: string;
+    purpose: string;
     deadline: string;
     priority: '高' | '中' | '低';
     status: '未着手' | '進行中' | '完了';
@@ -61,7 +62,12 @@ const Profile: React.FC = () => {
     }
 
     if (!user) {
-        return <div><Sidebar />このアカウントは存在しません</div>;
+        return (
+            <div>
+                <Sidebar />
+                このアカウントは存在しません
+            </div>
+        );
     }
 
     // タスクを優先度とステータスごとに分類して表示
@@ -70,10 +76,12 @@ const Profile: React.FC = () => {
             ? tasks
                 .filter(task => task.priority === priority && task.status === status)
                 .map(task => (
-                    <TaskCard key={task.title}>
-                        <h3>{task.title}</h3>
-                        <p>{task.description}</p>
-                        <p>期限: {task.deadline}</p>
+                    <TaskCard key={task.id}>
+                        <Link to={`/${userId}/task/${task.id}`}>
+                            <h3>{task.title}</h3>
+                            <p>{task.purpose}</p>
+                            <p>期限: {task.deadline}</p>
+                        </Link>
                     </TaskCard>
                 ))
             : null;

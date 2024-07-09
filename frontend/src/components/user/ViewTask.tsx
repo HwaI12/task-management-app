@@ -16,7 +16,6 @@ interface Task {
     priority: string;
     status: string;
     purpose: string;
-    description: string;
     steps: string;
     memo: string;
     remarks: string;

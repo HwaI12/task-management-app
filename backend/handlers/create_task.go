@@ -22,17 +22,28 @@ func CreateTask(db *sql.DB) http.HandlerFunc {
 
 		// データベースにタスクを挿入
 		query := `
-		INSERT INTO tasks (user_id, title, deadline, priority, status, purpose, steps, memo, remarks)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-		`
-		_, err = db.Exec(query, task.UserID, task.Title, task.Deadline, task.Priority, task.Status, task.Purpose, task.Steps, task.Memo, task.Remarks)
+        INSERT INTO tasks (user_id, title, deadline, priority, status, purpose, steps, memo, remarks)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `
+		result, err := db.Exec(query, task.UserID, task.Title, task.Deadline, task.Priority, task.Status, task.Purpose, task.Steps, task.Memo, task.Remarks)
 		if err != nil {
 			log.Printf("タスクの保存に失敗しました: %v", err)
 			http.Error(w, "タスクの登録に失敗しました", http.StatusInternalServerError)
 			return
 		}
 
+		// 挿入されたタスクのIDを取得
+		taskID, err := result.LastInsertId()
+		if err != nil {
+			log.Printf("挿入されたタスクのID取得に失敗しました: %v", err)
+			http.Error(w, "タスクの登録に失敗しました", http.StatusInternalServerError)
+			return
+		}
+
+		task.ID = int(taskID)
+
 		log.Println("タスクが正常に追加されました")
-		w.WriteHeader(http.StatusCreated)
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(task)
 	}
 }

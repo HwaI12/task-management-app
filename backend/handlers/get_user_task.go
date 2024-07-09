@@ -11,7 +11,7 @@ import (
 )
 
 // GetTask は指定されたタスクIDのタスクを取得するハンドラ関数です
-func GetTasks(db *sql.DB) http.HandlerFunc {
+func GetUserTasks(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		taskID := vars["task_id"]
