@@ -13,8 +13,8 @@ const CreateTask: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [title, setTitle] = useState('');
     const [deadline, setDeadline] = useState('');
-    const [priority, setPriority] = useState('');
-    const [status, setStatus] = useState('');
+    const [priority, setPriority] = useState('高');
+    const [status, setStatus] = useState('未着手');
     const [purpose, setPurpose] = useState('');
     const [description, setDescription] = useState('');
     const [steps, setSteps] = useState('');
@@ -46,15 +46,15 @@ const CreateTask: React.FC = () => {
                 remarks,
             });
 
-            console.log('Register successful:', response.data);
-            navigate('/home');
+            console.log('登録成功:', response.data);
+            navigate('/profile');
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                console.error('Signup error:', error.response?.data || error.message);
+                console.error('登録エラー:', error.response?.data || error.message);
                 setErrorMessage(error.response?.data?.message || '登録に失敗しました。');
             } else {
-                console.error('Unexpected error:', error);
-                setErrorMessage('予期せぬエラーが発生しました。');
+                console.error('予期しないエラー:', error);
+                setErrorMessage('予期しないエラーが発生しました。');
             }
         }
     };
@@ -63,11 +63,11 @@ const CreateTask: React.FC = () => {
         <div>
             <Sidebar />
             <ContentContainer>
-                <h2>Add Task Page</h2>
-                <p> User {userId}!</p>
+                <h2>タスク追加ページ</h2>
+                <p> ユーザー {userId}!</p>
                 <form onSubmit={handleSubmit}>
                     <div>
-                        <label>Title</label>
+                        <label>タイトル</label>
                         <input
                             type="text"
                             value={title}
@@ -75,7 +75,7 @@ const CreateTask: React.FC = () => {
                         />
                     </div>
                     <div>
-                        <label>Deadline</label>
+                        <label>期限</label>
                         <input
                             type="date"
                             value={deadline}
@@ -83,58 +83,58 @@ const CreateTask: React.FC = () => {
                         />
                     </div>
                     <div>
-                        <label>Priority</label>
+                        <label>優先度</label>
                         <select value={priority} onChange={(e) => setPriority(e.target.value)}>
-                            <option value="high">High</option>
-                            <option value="medium">Medium</option>
-                            <option value="low">Low</option>
+                            <option value="高">高</option>
+                            <option value="中">中</option>
+                            <option value="低">低</option>
                         </select>
                     </div>
                     <div>
-                        <label>Status</label>
+                        <label>ステータス</label>
                         <select value={status} onChange={(e) => setStatus(e.target.value)}>
-                            <option value="not_started">Not started</option>
-                            <option value="in_progress">In progress</option>
-                            <option value="done">Done</option>
+                            <option value="未着手">未着手</option>
+                            <option value="進行中">進行中</option>
+                            <option value="完了">完了</option>
                         </select>
                     </div>
                     <div>
-                        <label>Purpose</label>
+                        <label>目的</label>
                         <textarea
                             value={purpose}
                             onChange={(e) => setPurpose(e.target.value)}
                         ></textarea>
                     </div>
                     <div>
-                        <label>Description</label>
+                        <label>説明</label>
                         <textarea
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                         ></textarea>
                     </div>
                     <div>
-                        <label>Steps</label>
+                        <label>ステップ</label>
                         <textarea
                             value={steps}
                             onChange={(e) => setSteps(e.target.value)}
                         ></textarea>
                     </div>
                     <div>
-                        <label>Memo</label>
+                        <label>メモ</label>
                         <textarea
                             value={memo}
                             onChange={(e) => setMemo(e.target.value)}
                         ></textarea>
                     </div>
                     <div>
-                        <label>Remarks</label>
+                        <label>備考</label>
                         <textarea
                             value={remarks}
                             onChange={(e) => setRemarks(e.target.value)}
                         ></textarea>
                     </div>
                     {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-                    <button type="submit">Add Task</button>
+                    <button type="submit">タスク追加</button>
                 </form>
             </ContentContainer>
         </div>

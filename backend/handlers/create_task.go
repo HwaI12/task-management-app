@@ -15,12 +15,12 @@ func CreateTask(db *sql.DB) http.HandlerFunc {
 		var task models.Task
 		err := json.NewDecoder(r.Body).Decode(&task)
 		if err != nil {
-			log.Printf("リクエストのパースに失敗しました: %v", err)
-			http.Error(w, "リクエストの形式が正しくありません", http.StatusBadRequest)
+			log.Printf("リクエストの解析に失敗しました: %v", err)
+			http.Error(w, "リクエスト形式が正しくありません", http.StatusBadRequest)
 			return
 		}
 
-		// タスクの保存
+		// データベースにタスクを挿入
 		query := `
 		INSERT INTO tasks (user_id, title, deadline, priority, status, purpose, description, steps, memo, remarks)
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -28,11 +28,11 @@ func CreateTask(db *sql.DB) http.HandlerFunc {
 		_, err = db.Exec(query, task.UserID, task.Title, task.Deadline, task.Priority, task.Status, task.Purpose, task.Description, task.Steps, task.Memo, task.Remarks)
 		if err != nil {
 			log.Printf("タスクの保存に失敗しました: %v", err)
-			http.Error(w, "タスクの保存に失敗しました", http.StatusInternalServerError)
+			http.Error(w, "タスクの登録に失敗しました", http.StatusInternalServerError)
 			return
 		}
 
-		log.Println("タスクが正常に保存されました.")
+		log.Println("タスクが正常に追加されました")
 		w.WriteHeader(http.StatusCreated)
 	}
 }

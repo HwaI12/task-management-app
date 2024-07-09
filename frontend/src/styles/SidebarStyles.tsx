@@ -3,7 +3,8 @@ import {
     IoHomeOutline,
     IoNotificationsOutline,
     IoPersonOutline,
-    IoLogOutOutline
+    IoLogOutOutline,
+    IoAddCircleOutline
 } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 
@@ -74,6 +75,11 @@ export const StyledIoPersonOutline = styled(IoPersonOutline)`
 `;
 
 export const StyledIoLogOutOutline = styled(IoLogOutOutline)`
+    font-size: 24px;
+    color: #333;
+`;
+
+export const StyledIoAddCircleOutline = styled(IoAddCircleOutline)`
     font-size: 24px;
     color: #333;
 `;

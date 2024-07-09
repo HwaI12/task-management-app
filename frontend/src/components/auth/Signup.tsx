@@ -35,6 +35,8 @@ const Signup: React.FC = () => {
 
             console.log('Resister successful:', response.data);
             localStorage.setItem('authToken', response.data.token);
+            localStorage.setItem('userId', user_id);
+            localStorage.setItem('username', response.data.username);
             navigate('/home');
         } catch (error) {
             if (axios.isAxiosError(error)) {

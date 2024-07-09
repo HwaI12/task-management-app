@@ -31,7 +31,8 @@ const Signin: React.FC = () => {
             );
             console.log('Signin successful:', response.data);
             localStorage.setItem('authToken', response.data.token);
-            localStorage.setItem('userId', user_id); // Store user_id in localStorage
+            localStorage.setItem('userId', user_id);
+            localStorage.setItem('username', response.data.username);
             navigate('/home');
         } catch (error) {
             if (axios.isAxiosError(error)) {

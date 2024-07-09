@@ -9,7 +9,8 @@ import {
     StyledIoNotificationsOutline,
     StyledIoPersonOutline,
     StyledIoLogOutOutline,
-    StyledLink
+    StyledLink,
+    StyledIoAddCircleOutline
 } from '../../styles/SidebarStyles';
 import logo from '../../assets/T.png';
 
@@ -27,6 +28,11 @@ const Sidebar: React.FC = () => {
                 </MenuItem>
                 <MenuItem>
                     <StyledLink to="/"><StyledIoNotificationsOutline /></StyledLink>
+                </MenuItem>
+                <MenuItem>
+                    {userId && (
+                        <StyledLink to={`/${userId}/addtask`}><StyledIoAddCircleOutline /></StyledLink>
+                    )}
                 </MenuItem>
                 <MenuItem>
                     {userId && (
