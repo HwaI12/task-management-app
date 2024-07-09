@@ -1,5 +1,3 @@
-// UserAuthStyles.tsx
-
 import styled from 'styled-components';
 
 export const Container = styled.div`
@@ -10,7 +8,7 @@ export const Container = styled.div`
   min-height: 100vh;
   background-color: #fff;
   padding: 20px;
-  transition: background-color 0.3s ease-in-out;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
   box-sizing: border-box;
 `;
 
@@ -23,10 +21,9 @@ export const Form = styled.div`
   max-width: 400px;
   border: 1px solid #d9dae2;
   box-sizing: border-box;
-  transition: box-shadow 0.3s ease-in-out;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
   margin: auto;
 `;
-
 
 export const Title = styled.h1`
   font-size: 1.5rem;
@@ -52,7 +49,8 @@ export const Input = styled.input`
   border-radius: 5px;
   font-size: 1rem;
   box-sizing: border-box;
-  transition: border-color 0.3s ease-in-out;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+  outline: none;
 
   &:focus {
     border-color: #2e4d61;

@@ -22,10 +22,10 @@ func CreateTask(db *sql.DB) http.HandlerFunc {
 
 		// データベースにタスクを挿入
 		query := `
-		INSERT INTO tasks (user_id, title, deadline, priority, status, purpose, description, steps, memo, remarks)
+		INSERT INTO tasks (user_id, title, deadline, priority, status, purpose, steps, memo, remarks)
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 		`
-		_, err = db.Exec(query, task.UserID, task.Title, task.Deadline, task.Priority, task.Status, task.Purpose, task.Description, task.Steps, task.Memo, task.Remarks)
+		_, err = db.Exec(query, task.UserID, task.Title, task.Deadline, task.Priority, task.Status, task.Purpose, task.Steps, task.Memo, task.Remarks)
 		if err != nil {
 			log.Printf("タスクの保存に失敗しました: %v", err)
 			http.Error(w, "タスクの登録に失敗しました", http.StatusInternalServerError)

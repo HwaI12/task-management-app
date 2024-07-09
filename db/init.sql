@@ -17,7 +17,6 @@ CREATE TABLE IF NOT EXISTS tasks (
     priority ENUM('高', '中', '低') NOT NULL,
     status ENUM('未着手', '進行中', '完了') NOT NULL,
     purpose TEXT NOT NULL,
-    description TEXT NOT NULL,
     steps TEXT NOT NULL,
     memo TEXT NOT NULL,
     remarks TEXT NOT NULL,

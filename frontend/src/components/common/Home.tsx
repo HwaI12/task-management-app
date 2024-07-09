@@ -22,7 +22,7 @@ const Home: React.FC = () => {
         <div>
             <Sidebar />
             <ContentContainer>
-                <h2>Home Page</h2>
+                <h1>Home Page</h1>
                 <p>Welcome to the Home Page!</p>
                 <p>追加予定</p>
                 {/* {userId ? (

@@ -18,7 +18,7 @@ func GetTasks(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		rows, err := db.Query("SELECT title, description, deadline, priority, status FROM tasks WHERE user_id = ?", userID)
+		rows, err := db.Query("SELECT title, deadline, priority, status FROM tasks WHERE user_id = ?", userID)
 		if err != nil {
 			log.Printf("タスクの取得に失敗しました: %v", err)
 			http.Error(w, "タスクの取得に失敗しました", http.StatusInternalServerError)
@@ -29,7 +29,7 @@ func GetTasks(db *sql.DB) http.HandlerFunc {
 		var tasks []models.Task
 		for rows.Next() {
 			var task models.Task
-			if err := rows.Scan(&task.Title, &task.Description, &task.Deadline, &task.Priority, &task.Status); err != nil {
+			if err := rows.Scan(&task.Title, &task.Deadline, &task.Priority, &task.Status); err != nil {
 				log.Printf("タスクのスキャンに失敗しました: %v", err)
 				http.Error(w, "タスクの取得に失敗しました", http.StatusInternalServerError)
 				return

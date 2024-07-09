@@ -27,7 +27,7 @@ const Sidebar: React.FC = () => {
                     <StyledLink to="/home"><StyledIoHomeOutline /></StyledLink>
                 </MenuItem>
                 <MenuItem>
-                    <StyledLink to="/"><StyledIoNotificationsOutline /></StyledLink>
+                    <StyledLink to="/Notifications"><StyledIoNotificationsOutline /></StyledLink>
                 </MenuItem>
                 <MenuItem>
                     {userId && (

@@ -61,7 +61,7 @@ const Profile: React.FC = () => {
     }
 
     if (!user) {
-        return <div>このアカウントは存在しません</div>;
+        return <div><Sidebar />このアカウントは存在しません</div>;
     }
 
     // タスクを優先度とステータスごとに分類して表示
