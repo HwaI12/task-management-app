@@ -11,7 +11,7 @@ export const ContentContainer = styled.div`
 `;
 
 export const PrioritySection = styled.div`
-    margin-bottom: 40px;
+    // margin-bottom: 40px;
     width: 50%;
     border-bottom: 1px solid #ccc;
     padding-bottom: 20px;
@@ -44,6 +44,7 @@ export const TaskCard = styled.div`
 `;
 
 export const UserContainer = styled.div`
+    // margin-bottom: 40px;
     display: flex;
     flex-direction: row;
     justify-content: center; // 中央揃え

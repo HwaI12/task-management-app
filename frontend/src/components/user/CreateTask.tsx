@@ -47,7 +47,7 @@ const CreateTask: React.FC = () => {
             });
 
             console.log('登録成功:', response.data);
-            navigate('/profile');
+            navigate(`/${userId}`);
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 console.error('登録エラー:', error.response?.data || error.message);

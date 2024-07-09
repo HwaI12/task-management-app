@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Taskmanagement from './components/common/Taskmanagement';
 import Signup from './components/auth/Signup';
 import Signin from './components/auth/Signin';
@@ -10,6 +10,7 @@ import Logout from './components/auth/Logout';
 import AuthGuard from './components/common/AuthGuard';
 import Profile from './components/user/Profile';
 import CreateTask from './components/user/CreateTask';
+import NotFound from './components/common/NotFound'; // NotFoundコンポーネントをインポート
 
 const App: React.FC = () => {
   return (
@@ -38,7 +39,7 @@ const App: React.FC = () => {
           <Route path="/:userId/addtask" element={<AuthGuard>
             <CreateTask />
           </AuthGuard>} />
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </div>
