@@ -89,6 +89,7 @@ func Login(db *sql.DB) http.HandlerFunc {
 
 		// レスポンスとして成功メッセージを返す
 		w.Header().Set("Content-Type", "application/json")
+		log.Printf("ユーザ %s が正常にログインしました", user.User_id)
 		json.NewEncoder(w).Encode(map[string]string{"message": "ログインに成功しました"})
 	}
 }

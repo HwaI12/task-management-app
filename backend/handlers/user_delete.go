@@ -12,7 +12,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// DeleteUser はユーザーの削除を処理するハンドラ関数です
+// DeleteUser: ユーザーの削除を処理するハンドラ関数
 func DeleteUser(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var user models.User
@@ -53,6 +53,7 @@ func DeleteUser(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
+		// 削除された行数を取得
 		rowsAffected, err := result.RowsAffected()
 		if err != nil {
 			log.Printf("行数の取得に失敗しました: %v", err)
@@ -60,11 +61,13 @@ func DeleteUser(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
+		// 削除された行数が0の場合はユーザーが見つからなかったとしてエラーを返す
 		if rowsAffected == 0 {
 			http.Error(w, "指定されたユーザーが見つかりません", http.StatusNotFound)
 			return
 		}
 
+		log.Printf("ユーザー %s が正常に削除されました", user.User_id)
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(map[string]string{"message": "ユーザーが正常に削除されました"})
 	}

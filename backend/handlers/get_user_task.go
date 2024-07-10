@@ -10,12 +10,13 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// GetTask は指定されたタスクIDのタスクを取得するハンドラ関数です
+// GetTask: 指定されたタスクIDのタスクを取得するハンドラ関数
 func GetUserTasks(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		taskID := vars["task_id"]
 		if taskID == "" {
+			log.Printf("タスクIDが指定されていません")
 			http.Error(w, "タスクIDが指定されていません", http.StatusBadRequest)
 			return
 		}
@@ -25,6 +26,7 @@ func GetUserTasks(db *sql.DB) http.HandlerFunc {
 			&task.Title, &task.Deadline, &task.Priority, &task.Status, &task.Purpose, &task.Steps, &task.Memo, &task.Remarks)
 		if err != nil {
 			if err == sql.ErrNoRows {
+				log.Printf("タスクが見つかりません: %s", taskID)
 				http.Error(w, "タスクが見つかりません", http.StatusNotFound)
 			} else {
 				log.Printf("タスクの取得に失敗しました: %v", err)

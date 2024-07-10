@@ -9,7 +9,7 @@ import (
 	"github.com/HwaI12/task-management-app/backend/models"
 )
 
-// CreateTask は新しいタスクを作成するハンドラ関数です
+// CreateTask: 新しいタスクを作成するハンドラ関数
 func CreateTask(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var task models.Task
@@ -42,7 +42,7 @@ func CreateTask(db *sql.DB) http.HandlerFunc {
 
 		task.ID = int(taskID)
 
-		log.Println("タスクが正常に追加されました")
+		log.Printf("新しいタスクが作成されました: %v", task)
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(task)
 	}

@@ -57,7 +57,7 @@ func Register(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		log.Println("ユーザーが正常に登録されました.")
+		log.Printf("新しいユーザー %s が登録されました", req.UserID)
 		w.WriteHeader(http.StatusCreated)
 	}
 }

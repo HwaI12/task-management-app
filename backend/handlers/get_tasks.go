@@ -9,11 +9,12 @@ import (
 	"github.com/HwaI12/task-management-app/backend/models"
 )
 
-// GetTasks は指定されたユーザーのタスクを取得するハンドラ関数です
+// GetTasks: 指定されたユーザーのタスクを取得するハンドラ関数
 func GetTasks(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		userID := r.URL.Query().Get("user_id")
 		if userID == "" {
+			log.Printf("ユーザーIDが指定されていません")
 			http.Error(w, "ユーザーIDが指定されていません", http.StatusBadRequest)
 			return
 		}

@@ -13,11 +13,12 @@ type User struct {
 	Username string `json:"username"`
 }
 
-// GetUser はユーザー情報を取得するハンドラ関数です
+// GetUser: ユーザー情報を取得するハンドラ関数
 func GetUser(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		userId := r.URL.Query().Get("user_id")
 		if userId == "" {
+			log.Printf("ユーザーIDが指定されていません")
 			http.Error(w, "ユーザーIDが指定されていません", http.StatusBadRequest)
 			return
 		}
@@ -26,6 +27,7 @@ func GetUser(db *sql.DB) http.HandlerFunc {
 		err := db.QueryRow("SELECT user_id, username FROM users WHERE user_id = ?", userId).Scan(&user.UserID, &user.Username)
 		if err != nil {
 			if err == sql.ErrNoRows {
+				log.Printf("ユーザーが見つかりません: %s", userId)
 				http.Error(w, "ユーザーが見つかりません", http.StatusNotFound)
 			} else {
 				log.Printf("データベースエラー: %v", err)
@@ -34,6 +36,7 @@ func GetUser(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
+		log.Printf("ユーザー %s の情報を取得しました", userId)
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(user)
 	}
