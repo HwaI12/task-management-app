@@ -23,13 +23,13 @@ func SetupRouter(db *sql.DB) http.Handler {
 	})
 
 	// ハンドラ関数の登録
-	router.HandleFunc("/register", controllers.Register(db)).Methods("POST")    // POST /register に対するハンドラ
-	router.HandleFunc("/login", controllers.Login(db)).Methods("POST")          // POST /login に対するハンドラ
-	router.HandleFunc("/delete", controllers.DeleteUser(db)).Methods("POST")    // POST /delete に対するハンドラ
+	// router.HandleFunc("/register", controllers.Register(db)).Methods("POST")    // POST /register に対するハンドラ
+	router.HandleFunc("/login", controllers.Login(db)).Methods("POST") // POST /login に対するハンドラ
+	// router.HandleFunc("/delete", controllers.DeleteUser(db)).Methods("POST")    // POST /delete に対するハンドラ
 	router.HandleFunc("/api/tasks", controllers.CreateTask(db)).Methods("POST") // POST /api/tasks に対するハンドラ
 	router.HandleFunc("/api/tasks", controllers.GetTasks(db)).Methods("GET")    // GET /api/tasks に対するハンドラ
 	router.HandleFunc("/api/tasks/{task_id}", controllers.GetUserTasks(db)).Methods("GET")
-	router.HandleFunc("/api/user", controllers.GetUser(db)).Methods("GET") // GET /api/user に対するハンドラ
+	// router.HandleFunc("/api/user", controllers.GetUser(db)).Methods("GET") // GET /api/user に対するハンドラ
 
 	// CORSミドルウェアをルーターに適用
 	handler := corsHandler.Handler(router)
