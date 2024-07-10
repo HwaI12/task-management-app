@@ -42,3 +42,4 @@ db/data/
 # Miscellaneous
 *.swp
 *~
+backend/kari/

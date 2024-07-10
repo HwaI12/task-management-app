@@ -1,56 +1,78 @@
 package models
 
+import (
+	"database/sql"
+	"fmt"
+)
+
 type User struct {
 	ID           int    `json:"id"`
-	User_id      string `json:"user_id"`
-	Username     string `json:"username"`
-	Email        string `json:"email"`
-	PasswordHash string `json:"password_hash"`
-	Password     string `json:"password" gorm:"-"`
-	CreatedAt    string `json:"created_at"`
-}
-
-type RegisterRequest struct {
 	UserID       string `json:"user_id"`
 	Username     string `json:"username"`
 	Email        string `json:"email"`
 	PasswordHash string `json:"password_hash"`
+	Password     string `json:"password,omitempty"`
+	CreatedAt    string `json:"created_at"`
 }
 
-// type SubSection struct {
-// 	ID      int    `json:"id"`
-// 	TaskID  int    `json:"task_id"`
-// 	Title   string `json:"title"`
-// 	Content string `json:"content"`
-// }
+type RegisterRequest struct {
+	UserID   string `json:"user_id"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
 
-// type PersonalArtifact struct {
-// 	ID        int       `json:"id"`
-// 	TaskID    int       `json:"task_id"`
-// 	UserID    int       `json:"user_id"`
-// 	FilePath  string    `json:"file_path"`
-// 	CreatedAt time.Time `json:"created_at"`
-// }
+// CreateUser は新しいユーザーをデータベースに追加します
+func CreateUser(db *sql.DB, user User) error {
+	query := "INSERT INTO users (user_id, username, email, password_hash) VALUES (?, ?, ?, ?)"
+	_, err := db.Exec(query, user.UserID, user.Username, user.Email, user.PasswordHash)
+	if err != nil {
+		return fmt.Errorf("ユーザーの保存に失敗しました: %v", err)
+	}
+	return nil
+}
 
-// type SharedArtifact struct {
-// 	ID        int       `json:"id"`
-// 	UserID    int       `json:"user_id"`
-// 	Title     string    `json:"title"`
-// 	Content   string    `json:"content"`
-// 	FilePath  string    `json:"file_path"`
-// 	CreatedAt time.Time `json:"created_at"`
-// }
+// GetUserByID は指定されたユーザーIDのユーザー情報をデータベースから取得します
+func GetUserByID(db *sql.DB, userID string) (User, error) {
+	var user User
+	query := "SELECT id, user_id, username, email, password_hash, created_at FROM users WHERE user_id = ?"
+	err := db.QueryRow(query, userID).Scan(&user.ID, &user.UserID, &user.Username, &user.Email, &user.PasswordHash, &user.CreatedAt)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return user, nil
+		}
+		return user, fmt.Errorf("ユーザーの取得に失敗しました: %v", err)
+	}
+	return user, nil
+}
 
-// type Progress struct {
-// 	ID              int `json:"id"`
-// 	TaskID          int `json:"task_id"`
-// 	ProgressPercent int `json:"progress_percent"`
-// }
+// UserExists は指定されたユーザーIDまたはメールアドレスが既に存在するかを確認します
+func UserExists(db *sql.DB, userID, email string) (bool, error) {
+	var exists bool
+	query := "SELECT EXISTS(SELECT 1 FROM users WHERE user_id = ? OR email = ?)"
+	err := db.QueryRow(query, userID, email).Scan(&exists)
+	if err != nil {
+		return false, fmt.Errorf("ユーザーIDまたはメールアドレスの存在確認中にエラーが発生しました: %v", err)
+	}
+	return exists, nil
+}
 
-// type Comment struct {
-// 	ID               int       `json:"id"`
-// 	SharedArtifactID int       `json:"shared_artifact_id"`
-// 	UserID           int       `json:"user_id"`
-// 	CommentText      string    `json:"comment_text"`
-// 	CreatedAt        time.Time `json:"created_at"`
-// }
+// DeleteUser は指定されたユーザーIDのユーザーをデータベースから削除します
+func DeleteUser(db *sql.DB, userID string) error {
+	query := "DELETE FROM users WHERE user_id = ?"
+	result, err := db.Exec(query, userID)
+	if err != nil {
+		return fmt.Errorf("ユーザーの削除に失敗しました: %v", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("行数の取得に失敗しました: %v", err)
+	}
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("指定されたユーザーが見つかりません")
+	}
+
+	return nil
+}
