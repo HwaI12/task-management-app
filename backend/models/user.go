@@ -59,3 +59,13 @@ func GetUserPassword(db *sql.DB, userID string) (string, error) {
 	}
 	return storedPassword, nil
 }
+
+// GetUserByID はユーザーIDからユーザー情報を取得します
+func GetUserByID(db *sql.DB, userID string) (*User, error) {
+	var user User
+	err := db.QueryRow("SELECT user_id, username FROM users WHERE user_id = ?", userID).Scan(&user.User_id, &user.Username)
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
