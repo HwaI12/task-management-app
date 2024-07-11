@@ -140,8 +140,6 @@ export const ButtonGroup = styled.div`
 export const customStyles: StylesConfig = {
     control: (provided) => ({
         ...provided,
-        width: '100%',
-        padding: '10px',
         fontSize: '1rem',
         border: '1px solid #f0f0f0',
         borderRadius: '5px',
@@ -154,12 +152,10 @@ export const customStyles: StylesConfig = {
     }),
     valueContainer: (provided) => ({
         ...provided,
-        width: '100%',
         boxSizing: 'border-box',
     }),
     menu: (provided) => ({
         ...provided,
-        width: '100%',
         zIndex: 9999,
     }),
     menuPortal: (base) => ({ ...base, zIndex: 9999 }),

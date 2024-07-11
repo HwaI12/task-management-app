@@ -11,7 +11,7 @@ interface Task {
     purpose: string;
     deadline: string;
     priority: 'high' | 'middle' | 'low';
-    status: '未着手' | '進行中' | '完了';
+    status: 'yet' | 'progress' | 'done';
 }
 
 // Userの型定義
@@ -103,15 +103,15 @@ const Profile: React.FC = () => {
                             <StatusSection>
                                 <div>
                                     <h4>未着手</h4>
-                                    {renderTasks('高', '未着手')}
+                                    {renderTasks('high', 'yet')}
                                 </div>
                                 <div>
                                     <h4>進行中</h4>
-                                    {renderTasks('高', '進行中')}
+                                    {renderTasks('high', 'progress')}
                                 </div>
                                 <div>
                                     <h4>完了</h4>
-                                    {renderTasks('高', '完了')}
+                                    {renderTasks('high', 'done')}
                                 </div>
                             </StatusSection>
                         </PrioritySection>
@@ -121,15 +121,15 @@ const Profile: React.FC = () => {
                             <StatusSection>
                                 <div>
                                     <h4>未着手</h4>
-                                    {renderTasks('中', '未着手')}
+                                    {renderTasks('middle', 'yet')}
                                 </div>
                                 <div>
                                     <h4>進行中</h4>
-                                    {renderTasks('中', '進行中')}
+                                    {renderTasks('middle', 'progress')}
                                 </div>
                                 <div>
                                     <h4>完了</h4>
-                                    {renderTasks('中', '完了')}
+                                    {renderTasks('middle', 'done')}
                                 </div>
                             </StatusSection>
                         </PrioritySection>
@@ -139,7 +139,7 @@ const Profile: React.FC = () => {
                             <StatusSection>
                                 <div>
                                     <h4>未着手</h4>
-                                    {renderTasks('低', '未着手')}
+                                    {renderTasks('low', 'yet')}
                                 </div>
                                 <div>
                                     <h4>進行中</h4>
@@ -147,7 +147,7 @@ const Profile: React.FC = () => {
                                 </div>
                                 <div>
                                     <h4>完了</h4>
-                                    {renderTasks('低', '完了')}
+                                    {renderTasks('low', 'done')}
                                 </div>
                             </StatusSection>
                         </PrioritySection>

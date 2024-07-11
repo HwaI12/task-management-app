@@ -112,7 +112,8 @@ const CreateTask: React.FC = () => {
                                         onChange={(option) => setPriority(option as SingleValue<OptionType>)}
                                         options={priorityOptions}
                                         placeholder="優先度を選択"
-                                        components={{ DropdownIndicator: () => null }}
+                                        styles={customStyles}
+                                        components={{ IndicatorSeparator: () => null }}
                                         menuPortalTarget={document.body}
                                         isMulti={false}
                                     />
@@ -139,7 +140,8 @@ const CreateTask: React.FC = () => {
                                         options={statusOptions}
                                         placeholder="ステータスを選択"
                                         menuPortalTarget={document.body}
-                                        components={{ DropdownIndicator: () => null }}
+                                        styles={customStyles}
+                                        components={{ IndicatorSeparator: () => null }}
                                         isMulti={false}
                                     />
                                 </SelectGroup>
