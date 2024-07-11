@@ -10,7 +10,7 @@ interface Task {
     title: string;
     purpose: string;
     deadline: string;
-    priority: '高' | '中' | '低';
+    priority: 'high' | 'middle' | 'low';
     status: '未着手' | '進行中' | '完了';
 }
 
