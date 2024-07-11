@@ -1,4 +1,5 @@
 - [2024/7/6](#202476)
+  - [環境構築](#環境構築)
   - [目的](#目的)
   - [進捗](#進捗)
   - [技術選定](#技術選定)
@@ -37,6 +38,10 @@
   - [詰まったところ](#詰まったところ-2)
   
 # 2024/7/6
+
+## 環境構築
+[Go + MySQL + React のDocker開発環境を作成する](https://qiita.com/makosinhori/items/c695774bef249a2014a6)
+を元に環境構築を行なった
 
 ## 目的
 
@@ -314,3 +319,5 @@ Supervisorを使うと、DBコンテナに接続できないせいでGoのコン
 - バックエンドのディレクトリ構成を修正したいが、今の技術では難しいことがわかった。
   - データベースに保存はできるが、ハッシュ化したパスワードの取得などのログインやユーザの取得ができなかった
   - POSTはできるがGETができない
+
+- [DockerでReact＋TypeScript環境を作ってみた～formatterを添えて～](https://logical-studio.com/develop/backend/20211217-docker-react-formatter/)を元に再構築したみたが、eslintのconfigファイルが`.eslintrc`だったものが、9.0.0以降はデフォルトが`eslint.config.mjs`になるそう。あまり文献がなかったため断念
