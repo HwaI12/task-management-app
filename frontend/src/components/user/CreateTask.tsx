@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams, Navigate } from 'react-router-dom';
 import Sidebar from '../common/Sidebar';
-import { ContentContainer, Form, FormGroup, TitleLabel, SubtitleLabel, Input, Select, ErrorMessage, Button, InputIconWrapper, StyledTextarea } from '../../styles/CreateTaskStyles';
+import { CreateTaskContainer, Form, FormGroup, TitleLabel, SubtitleLabel, Input, Select, ErrorMessage, Button, InputIconWrapper, StyledTextarea } from '../../styles/CreateTaskStyles';
+import { ContentContainer } from '../../styles/SidebarStyles';
 
 // ユーザーが認証されているか確認する関数
 const isAuthenticated = (): boolean => {
@@ -43,7 +44,7 @@ const CreateTask: React.FC = () => {
                 memo,
                 remarks,
             });
-    
+
             console.log('登録成功:', response.data);
             const newTaskId = response.data.id;
             navigate(`/${userId}/task/${newTaskId}`);
@@ -57,94 +58,94 @@ const CreateTask: React.FC = () => {
             }
         }
     };
-    
+
 
     return (
         <div>
             <Sidebar />
             <ContentContainer>
-                <h2>タスク追加ページ</h2>
-                <p>ユーザー {userId}!</p>
-                <Form onSubmit={handleSubmit}>
-                    <FormGroup>
-                        <TitleLabel>タイトル</TitleLabel>
-                        <InputIconWrapper>
-                            <Input
-                                type="text"
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                            />
-                        </InputIconWrapper>
-                    </FormGroup>
-                    <FormGroup>
-                        <SubtitleLabel>目的</SubtitleLabel>
-                        <InputIconWrapper>
-                            <Input
-                                value={purpose}
-                                onChange={(e) => setPurpose(e.target.value)}
-                            ></Input>
-                        </InputIconWrapper>
-                    </FormGroup>
-                    <FormGroup>
-                        <SubtitleLabel>優先度</SubtitleLabel>
-                        <InputIconWrapper>
-                            <Select value={priority} onChange={(e) => setPriority(e.target.value)}>
-                                <option value="高">高</option>
-                                <option value="中">中</option>
-                                <option value="低">低</option>
-                            </Select>
-                        </InputIconWrapper>
-                    </FormGroup>
-                    <FormGroup>
-                        <SubtitleLabel>期限</SubtitleLabel>
-                        <InputIconWrapper>
-                            <Input
-                                type="date"
-                                value={deadline}
-                                onChange={(e) => setDeadline(e.target.value)}
-                            />
-                        </InputIconWrapper>
-                    </FormGroup>
-                    <FormGroup>
-                        <SubtitleLabel>ステータス</SubtitleLabel>
-                        <InputIconWrapper>
-                            <Select value={status} onChange={(e) => setStatus(e.target.value)}>
-                                <option value="未着手">未着手</option>
-                                <option value="進行中">進行中</option>
-                                <option value="完了">完了</option>
-                            </Select>
-                        </InputIconWrapper>
-                    </FormGroup>
-                    <FormGroup>
-                        <SubtitleLabel>ステップ</SubtitleLabel>
-                        <InputIconWrapper>
-                            <StyledTextarea
-                                value={steps}
-                                onChange={(e) => setSteps(e.target.value)}
-                            ></StyledTextarea>
-                        </InputIconWrapper>
-                    </FormGroup>
-                    <FormGroup>
-                        <SubtitleLabel>メモ</SubtitleLabel>
-                        <InputIconWrapper>
-                            <StyledTextarea
-                                value={memo}
-                                onChange={(e) => setMemo(e.target.value)}
-                            ></StyledTextarea>
-                        </InputIconWrapper>
-                    </FormGroup>
-                    <FormGroup>
-                        <SubtitleLabel>備考</SubtitleLabel>
-                        <InputIconWrapper>
-                            <StyledTextarea
-                                value={remarks}
-                                onChange={(e) => setRemarks(e.target.value)}
-                            ></StyledTextarea>
-                        </InputIconWrapper>
-                    </FormGroup>
-                    {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-                    <Button type="submit">タスク追加</Button>
-                </Form>
+                <CreateTaskContainer>
+                    <Form onSubmit={handleSubmit}>
+                        <FormGroup>
+                            <TitleLabel>タスクタイトル</TitleLabel>
+                            <InputIconWrapper>
+                                <Input
+                                    type="text"
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                />
+                            </InputIconWrapper>
+                        </FormGroup>
+                        <FormGroup>
+                            <SubtitleLabel>目的</SubtitleLabel>
+                            <InputIconWrapper>
+                                <Input
+                                    value={purpose}
+                                    onChange={(e) => setPurpose(e.target.value)}
+                                ></Input>
+                            </InputIconWrapper>
+                        </FormGroup>
+                        <FormGroup>
+                            <SubtitleLabel>優先度</SubtitleLabel>
+                            <InputIconWrapper>
+                                <Select value={priority} onChange={(e) => setPriority(e.target.value)}>
+                                    <option value="高">高</option>
+                                    <option value="中">中</option>
+                                    <option value="低">低</option>
+                                </Select>
+                            </InputIconWrapper>
+                        </FormGroup>
+                        <FormGroup>
+                            <SubtitleLabel>期限</SubtitleLabel>
+                            <InputIconWrapper>
+                                <Input
+                                    type="date"
+                                    value={deadline}
+                                    onChange={(e) => setDeadline(e.target.value)}
+                                />
+                            </InputIconWrapper>
+                        </FormGroup>
+                        <FormGroup>
+                            <SubtitleLabel>ステータス</SubtitleLabel>
+                            <InputIconWrapper>
+                                <Select value={status} onChange={(e) => setStatus(e.target.value)}>
+                                    <option value="未着手">未着手</option>
+                                    <option value="進行中">進行中</option>
+                                    <option value="完了">完了</option>
+                                </Select>
+                            </InputIconWrapper>
+                        </FormGroup>
+                        <FormGroup>
+                            <SubtitleLabel>ステップ</SubtitleLabel>
+                            <InputIconWrapper>
+                                <StyledTextarea
+                                    value={steps}
+                                    onChange={(e) => setSteps(e.target.value)}
+                                ></StyledTextarea>
+                            </InputIconWrapper>
+                        </FormGroup>
+                        <FormGroup>
+                            <SubtitleLabel>メモ</SubtitleLabel>
+                            <InputIconWrapper>
+                                <StyledTextarea
+                                    value={memo}
+                                    onChange={(e) => setMemo(e.target.value)}
+                                ></StyledTextarea>
+                            </InputIconWrapper>
+                        </FormGroup>
+                        <FormGroup>
+                            <SubtitleLabel>備考</SubtitleLabel>
+                            <InputIconWrapper>
+                                <StyledTextarea
+                                    value={remarks}
+                                    onChange={(e) => setRemarks(e.target.value)}
+                                ></StyledTextarea>
+                            </InputIconWrapper>
+                        </FormGroup>
+                        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+                        <Button type="submit">タスク追加</Button>
+                    </Form>
+                </CreateTaskContainer>
             </ContentContainer>
         </div>
     );

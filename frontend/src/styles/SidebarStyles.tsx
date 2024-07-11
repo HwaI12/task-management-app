@@ -19,6 +19,14 @@ export const SidebarContainer = styled.div`
     top: 0;
     left: 0;
     z-index: 1000;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        height: 70px;
+        flex-direction: row;
+        bottom: 0;
+        top: auto;
+    }
 `;
 
 export const SidebarHeader = styled.div`
@@ -27,6 +35,10 @@ export const SidebarHeader = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+
+    @media (max-width: 768px) {
+        display: none;
+    }
 `;
 
 export const SidebarMenu = styled.div`
@@ -36,6 +48,12 @@ export const SidebarMenu = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    @media (max-width: 768px) {
+        flex-direction: row;
+        padding: 0;
+        overflow-y: hidden;
+    }
 `;
 
 export const MenuItem = styled.div`
@@ -51,12 +69,22 @@ export const MenuItem = styled.div`
     &:hover {
         background-color: #eee;
     }
+
+    @media (max-width: 768px) {
+        width: auto;
+        margin-bottom: 0;
+        flex: 1;
+    }
 `;
 
 export const SidebarLogoImg = styled.img`
     width: 80px;
     height: 70px;
     object-fit: cover;
+
+    @media (max-width: 768px) {
+        display: none;
+    }
 `;
 
 export const StyledIoHomeOutline = styled(IoHomeOutline)`
@@ -88,6 +116,11 @@ export const ContentContainer = styled.div`
     margin-left: 60px;
     padding: 20px;
     transition: margin-left 0.3s ease;
+
+    @media (max-width: 768px) {
+        margin-left: 0;
+        margin-bottom: 70px;
+    }
 `;
 
 export const StyledLink = styled(Link)`

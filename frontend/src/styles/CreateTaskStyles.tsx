@@ -1,11 +1,9 @@
 import styled from 'styled-components';
 
-export const ContentContainer = styled.div`
+export const CreateTaskContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
-    margin-left: 60px;
     text-align: left;
 `;
 
