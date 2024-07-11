@@ -5,6 +5,15 @@ services:
       - '3000:3000'
     tty: true
     stdin_open: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_LOG_LEVEL=debug
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+
 
   backend:
     build: ./backend

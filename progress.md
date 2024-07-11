@@ -316,6 +316,52 @@ Supervisorを使うと、DBコンテナに接続できないせいでGoのコン
 # 2024/7/10
 ## 詰まったところ
 - フロントエンドでのログを追加したい
+  ```typescript
+  export const log = (message: string, level: 'debug' | 'info' | 'warn' | 'error' = 'info') => {
+    console.log(`[${level.toUpperCase()}] ${message}`);
+  };
+
+  log('This is an error message', 'error');
+  ```
+  ```dockerfile
+  # ベースイメージ
+  FROM node:18-alpine
+  
+  # 作業ディレクトリを設定
+  WORKDIR /app
+  
+  # 依存関係のインストール
+  COPY package*.json ./
+  COPY yarn.lock ./
+  RUN yarn install
+
+  # アプリケーションのソースをコピー
+  COPY . .
+
+  # ポートの公開
+  EXPOSE 3000
+
+  # アプリケーションの起動
+  CMD ["yarn", "start"]
+  ```
+  ```yml
+  services:
+   frontend:
+      build: ./frontend
+      ports:
+      - '3000:3000'
+      tty: true
+      stdin_open: true
+      environment:
+      - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_LOG_LEVEL=debug
+      logging:
+      driver: "json-file"
+      options:
+         max-size: "200k"
+         max-file: "10"
+  ```
+  と追加し、`docker-compose logs frontendとログを確認したところ、表示されなかった
 - バックエンドのディレクトリ構成を修正したいが、今の技術では難しいことがわかった。
   - データベースに保存はできるが、ハッシュ化したパスワードの取得などのログインやユーザの取得ができなかった
   - POSTはできるがGETができない

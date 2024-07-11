@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import { ContentContainer } from '../../styles/SidebarStyles';
+import { log } from '../Log/Logging';
 
 const isAuthenticated = (): boolean => {
     return localStorage.getItem('authToken') !== null;
@@ -12,6 +13,9 @@ const isAuthenticated = (): boolean => {
 
 const Home: React.FC = () => {
     // const userId = localStorage.getItem('userId');
+    useEffect(() => {
+        log('Homeコンポーネントがマウントされました', 'info');
+    }, []);
 
     // ユーザーが認証されていない場合はログインページにリダイレクト
     if (!isAuthenticated()) {
