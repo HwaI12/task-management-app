@@ -36,6 +36,7 @@
   - [MySQLの中身を確認する方法](#mysqlの中身を確認する方法)
 - [2024/7/10](#2024710)
   - [詰まったところ](#詰まったところ-2)
+    - [React-Select](#react-select)
   
 # 2024/7/6
 
@@ -367,3 +368,21 @@ Supervisorを使うと、DBコンテナに接続できないせいでGoのコン
   - POSTはできるがGETができない
 
 - [DockerでReact＋TypeScript環境を作ってみた～formatterを添えて～](https://logical-studio.com/develop/backend/20211217-docker-react-formatter/)を元に再構築したみたが、eslintのconfigファイルが`.eslintrc`だったものが、9.0.0以降はデフォルトが`eslint.config.mjs`になるそう。あまり文献がなかったため断念
+
+### React-Select
+```typescript
+<Select
+    styles={customStyles}
+ />
+```
+このように使用できるが、customStylesでwidthを設定すると文字によって横幅が変わってしまう。
+
+解決策
+```typescript
+<div style={{width:'100%'}}>
+  <Select
+      styles={customStyles}
+  />
+</div>
+```
+横幅が修正された！

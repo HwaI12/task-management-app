@@ -2,19 +2,39 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams, Navigate } from 'react-router-dom';
 import Sidebar from '../common/Sidebar';
-import { ContentContainer, Form, FormGroup, TitleLabel, SubtitleLabel, Input, Select, ErrorMessage, Button, InputIconWrapper, StyledTextarea } from '../../styles/CreateTaskStyles';
+import { CreateTaskContainer, Form, FormGroup, TitleLabel, SubtitleLabel, Input, ErrorMessage, Button, InputIconWrapper, StyledTextarea, customStyles, SelectGroup } from '../../styles/CreateTaskStyles';
+import { ContentContainer } from '../../styles/SidebarStyles';
+import Select, { SingleValue } from 'react-select';
+
+// オプション型の定義
+interface OptionType {
+    value: string;
+    label: string;
+}
 
 // ユーザーが認証されているか確認する関数
 const isAuthenticated = (): boolean => {
     return localStorage.getItem('authToken') !== null;
 };
 
+const priorityOptions: OptionType[] = [
+    { value: "high", label: "高" },
+    { value: "middle", label: "中" },
+    { value: "low", label: "低" },
+];
+
+const statusOptions: OptionType[] = [
+    { value: 'yet', label: '未着手' },
+    { value: 'progress', label: '進行中' },
+    { value: 'done', label: '完了' },
+];
+
 const CreateTask: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [title, setTitle] = useState('');
     const [deadline, setDeadline] = useState('');
-    const [priority, setPriority] = useState('高');
-    const [status, setStatus] = useState('未着手');
+    const [priority, setPriority] = useState<SingleValue<OptionType>>(null);
+    const [status, setStatus] = useState<SingleValue<OptionType>>(null);
     const [purpose, setPurpose] = useState('');
     const [steps, setSteps] = useState('');
     const [memo, setMemo] = useState('');
@@ -36,14 +56,14 @@ const CreateTask: React.FC = () => {
                 user_id: userId,
                 title,
                 deadline,
-                priority,
-                status,
+                priority: priority ? priority.value : '',
+                status: status ? status.value : '',
                 purpose,
                 steps,
                 memo,
                 remarks,
             });
-    
+
             console.log('登録成功:', response.data);
             const newTaskId = response.data.id;
             navigate(`/${userId}/task/${newTaskId}`);
@@ -57,94 +77,107 @@ const CreateTask: React.FC = () => {
             }
         }
     };
-    
 
     return (
         <div>
             <Sidebar />
             <ContentContainer>
-                <h2>タスク追加ページ</h2>
-                <p>ユーザー {userId}!</p>
-                <Form onSubmit={handleSubmit}>
-                    <FormGroup>
-                        <TitleLabel>タイトル</TitleLabel>
-                        <InputIconWrapper>
-                            <Input
-                                type="text"
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                            />
-                        </InputIconWrapper>
-                    </FormGroup>
-                    <FormGroup>
-                        <SubtitleLabel>目的</SubtitleLabel>
-                        <InputIconWrapper>
-                            <Input
-                                value={purpose}
-                                onChange={(e) => setPurpose(e.target.value)}
-                            ></Input>
-                        </InputIconWrapper>
-                    </FormGroup>
-                    <FormGroup>
-                        <SubtitleLabel>優先度</SubtitleLabel>
-                        <InputIconWrapper>
-                            <Select value={priority} onChange={(e) => setPriority(e.target.value)}>
-                                <option value="高">高</option>
-                                <option value="中">中</option>
-                                <option value="低">低</option>
-                            </Select>
-                        </InputIconWrapper>
-                    </FormGroup>
-                    <FormGroup>
-                        <SubtitleLabel>期限</SubtitleLabel>
-                        <InputIconWrapper>
-                            <Input
-                                type="date"
-                                value={deadline}
-                                onChange={(e) => setDeadline(e.target.value)}
-                            />
-                        </InputIconWrapper>
-                    </FormGroup>
-                    <FormGroup>
-                        <SubtitleLabel>ステータス</SubtitleLabel>
-                        <InputIconWrapper>
-                            <Select value={status} onChange={(e) => setStatus(e.target.value)}>
-                                <option value="未着手">未着手</option>
-                                <option value="進行中">進行中</option>
-                                <option value="完了">完了</option>
-                            </Select>
-                        </InputIconWrapper>
-                    </FormGroup>
-                    <FormGroup>
-                        <SubtitleLabel>ステップ</SubtitleLabel>
-                        <InputIconWrapper>
-                            <StyledTextarea
-                                value={steps}
-                                onChange={(e) => setSteps(e.target.value)}
-                            ></StyledTextarea>
-                        </InputIconWrapper>
-                    </FormGroup>
-                    <FormGroup>
-                        <SubtitleLabel>メモ</SubtitleLabel>
-                        <InputIconWrapper>
-                            <StyledTextarea
-                                value={memo}
-                                onChange={(e) => setMemo(e.target.value)}
-                            ></StyledTextarea>
-                        </InputIconWrapper>
-                    </FormGroup>
-                    <FormGroup>
-                        <SubtitleLabel>備考</SubtitleLabel>
-                        <InputIconWrapper>
-                            <StyledTextarea
-                                value={remarks}
-                                onChange={(e) => setRemarks(e.target.value)}
-                            ></StyledTextarea>
-                        </InputIconWrapper>
-                    </FormGroup>
-                    {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-                    <Button type="submit">タスク追加</Button>
-                </Form>
+                <CreateTaskContainer>
+                    <Form onSubmit={handleSubmit}>
+                        <FormGroup>
+                            <TitleLabel>タスクタイトル</TitleLabel>
+                            <InputIconWrapper>
+                                <Input
+                                    type="text"
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                />
+                            </InputIconWrapper>
+                        </FormGroup>
+                        <FormGroup>
+                            <SubtitleLabel>目的</SubtitleLabel>
+                            <InputIconWrapper>
+                                <Input
+                                    value={purpose}
+                                    onChange={(e) => setPurpose(e.target.value)}
+                                />
+                            </InputIconWrapper>
+                        </FormGroup>
+                        <FormGroup>
+                            <SubtitleLabel>優先度</SubtitleLabel>
+                            <InputIconWrapper>
+                                <SelectGroup>
+                                    <Select
+                                        value={priority}
+                                        onChange={(option) => setPriority(option as SingleValue<OptionType>)}
+                                        options={priorityOptions}
+                                        placeholder="優先度を選択"
+                                        styles={customStyles}
+                                        components={{ IndicatorSeparator: () => null }}
+                                        menuPortalTarget={document.body}
+                                        isMulti={false}
+                                    />
+                                </SelectGroup>
+                            </InputIconWrapper>
+                        </FormGroup>
+                        <FormGroup>
+                            <SubtitleLabel>期限</SubtitleLabel>
+                            <InputIconWrapper>
+                                <Input
+                                    type="date"
+                                    value={deadline}
+                                    onChange={(e) => setDeadline(e.target.value)}
+                                />
+                            </InputIconWrapper>
+                        </FormGroup>
+                        <FormGroup>
+                            <SubtitleLabel>ステータス</SubtitleLabel>
+                            <InputIconWrapper>
+                                <SelectGroup>
+                                    <Select
+                                        value={status}
+                                        onChange={(option) => setStatus(option as SingleValue<OptionType>)}
+                                        options={statusOptions}
+                                        placeholder="ステータスを選択"
+                                        menuPortalTarget={document.body}
+                                        styles={customStyles}
+                                        components={{ IndicatorSeparator: () => null }}
+                                        isMulti={false}
+                                    />
+                                </SelectGroup>
+                            </InputIconWrapper>
+                        </FormGroup>
+                        <FormGroup>
+                            <SubtitleLabel>ステップ</SubtitleLabel>
+                            <InputIconWrapper>
+                                <StyledTextarea
+                                    value={steps}
+                                    onChange={(e) => setSteps(e.target.value)}
+                                />
+                            </InputIconWrapper>
+                        </FormGroup>
+                        <FormGroup>
+                            <SubtitleLabel>メモ</SubtitleLabel>
+                            <InputIconWrapper>
+                                <StyledTextarea
+                                    value={memo}
+                                    onChange={(e) => setMemo(e.target.value)}
+                                />
+                            </InputIconWrapper>
+                        </FormGroup>
+                        <FormGroup>
+                            <SubtitleLabel>備考</SubtitleLabel>
+                            <InputIconWrapper>
+                                <StyledTextarea
+                                    value={remarks}
+                                    onChange={(e) => setRemarks(e.target.value)}
+                                />
+                            </InputIconWrapper>
+                        </FormGroup>
+                        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+                        <Button type="submit">タスク追加</Button>
+                    </Form>
+                </CreateTaskContainer>
             </ContentContainer>
         </div>
     );
