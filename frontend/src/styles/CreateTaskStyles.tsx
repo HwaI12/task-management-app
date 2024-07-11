@@ -6,7 +6,7 @@ export const CreateTaskContainer = styled.div`
     flex-direction: column;
     align-items: center;
     text-align: left;
-    padding: 10px;
+    padding: 20px;
 
     @media (max-width: 768px) {
         padding: 30px;
@@ -123,6 +123,10 @@ export const InputIcon = styled.span`
     font-size: 1.2rem;
 `;
 
+export const SelectGroup = styled.div`
+    width: 100%;
+`;
+
 export const StyledTextarea = styled(Textarea)`
     height: 100px;
 `;
@@ -133,15 +137,10 @@ export const ButtonGroup = styled.div`
     margin-bottom: 20px;
 `;
 
-export interface OptionType {
-    value: string;
-    label: string;
-}
-
-export const customStyles: StylesConfig<OptionType> = {
+export const customStyles: StylesConfig = {
     control: (provided) => ({
         ...provided,
-        width: '70vw',
+        width: '100%',
         padding: '10px',
         fontSize: '1rem',
         border: '1px solid #f0f0f0',
@@ -153,8 +152,14 @@ export const customStyles: StylesConfig<OptionType> = {
         zIndex: 1,
         boxSizing: 'border-box',
     }),
+    valueContainer: (provided) => ({
+        ...provided,
+        width: '100%',
+        boxSizing: 'border-box',
+    }),
     menu: (provided) => ({
         ...provided,
+        width: '100%',
         zIndex: 9999,
     }),
     menuPortal: (base) => ({ ...base, zIndex: 9999 }),

@@ -2,20 +2,20 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams, Navigate } from 'react-router-dom';
 import Sidebar from '../common/Sidebar';
-import { CreateTaskContainer, Form, FormGroup, TitleLabel, SubtitleLabel, Input, ErrorMessage, Button, InputIconWrapper, StyledTextarea, customStyles } from '../../styles/CreateTaskStyles';
+import { CreateTaskContainer, Form, FormGroup, TitleLabel, SubtitleLabel, Input, ErrorMessage, Button, InputIconWrapper, StyledTextarea, customStyles, SelectGroup } from '../../styles/CreateTaskStyles';
 import { ContentContainer } from '../../styles/SidebarStyles';
 import Select, { SingleValue } from 'react-select';
-
-// ユーザーが認証されているか確認する関数
-const isAuthenticated = (): boolean => {
-    return localStorage.getItem('authToken') !== null;
-};
 
 // オプション型の定義
 interface OptionType {
     value: string;
     label: string;
 }
+
+// ユーザーが認証されているか確認する関数
+const isAuthenticated = (): boolean => {
+    return localStorage.getItem('authToken') !== null;
+};
 
 const priorityOptions: OptionType[] = [
     { value: "high", label: "高" },
@@ -28,8 +28,6 @@ const statusOptions: OptionType[] = [
     { value: 'progress', label: '進行中' },
     { value: 'done', label: '完了' },
 ];
-
-
 
 const CreateTask: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState('');
@@ -102,22 +100,23 @@ const CreateTask: React.FC = () => {
                                 <Input
                                     value={purpose}
                                     onChange={(e) => setPurpose(e.target.value)}
-                                ></Input>
+                                />
                             </InputIconWrapper>
                         </FormGroup>
                         <FormGroup>
                             <SubtitleLabel>優先度</SubtitleLabel>
                             <InputIconWrapper>
-                            {/* CSSをwidth: 100%にしたが、Selectの幅が広がらない */}
-                                <Select
-                                    value={priority}
-                                    onChange={(option) => setPriority(option as SingleValue<OptionType>)}
-                                    options={priorityOptions}
-                                    placeholder="優先度を選択"
-                                    styles={customStyles}
-                                    menuPortalTarget={document.body}
-                                    isMulti={false}
-                                />
+                                <SelectGroup>
+                                    <Select
+                                        value={priority}
+                                        onChange={(option) => setPriority(option as SingleValue<OptionType>)}
+                                        options={priorityOptions}
+                                        placeholder="優先度を選択"
+                                        components={{ DropdownIndicator: () => null }}
+                                        menuPortalTarget={document.body}
+                                        isMulti={false}
+                                    />
+                                </SelectGroup>
                             </InputIconWrapper>
                         </FormGroup>
                         <FormGroup>
@@ -133,15 +132,17 @@ const CreateTask: React.FC = () => {
                         <FormGroup>
                             <SubtitleLabel>ステータス</SubtitleLabel>
                             <InputIconWrapper>
-                                <Select
-                                    value={status}
-                                    onChange={(option) => setStatus(option as SingleValue<OptionType>)}
-                                    options={statusOptions}
-                                    placeholder="ステータスを選択"
-                                    styles={customStyles}
-                                    menuPortalTarget={document.body}
-                                    isMulti={false}
-                                />
+                                <SelectGroup>
+                                    <Select
+                                        value={status}
+                                        onChange={(option) => setStatus(option as SingleValue<OptionType>)}
+                                        options={statusOptions}
+                                        placeholder="ステータスを選択"
+                                        menuPortalTarget={document.body}
+                                        components={{ DropdownIndicator: () => null }}
+                                        isMulti={false}
+                                    />
+                                </SelectGroup>
                             </InputIconWrapper>
                         </FormGroup>
                         <FormGroup>
@@ -150,7 +151,7 @@ const CreateTask: React.FC = () => {
                                 <StyledTextarea
                                     value={steps}
                                     onChange={(e) => setSteps(e.target.value)}
-                                ></StyledTextarea>
+                                />
                             </InputIconWrapper>
                         </FormGroup>
                         <FormGroup>
@@ -159,7 +160,7 @@ const CreateTask: React.FC = () => {
                                 <StyledTextarea
                                     value={memo}
                                     onChange={(e) => setMemo(e.target.value)}
-                                ></StyledTextarea>
+                                />
                             </InputIconWrapper>
                         </FormGroup>
                         <FormGroup>
@@ -168,7 +169,7 @@ const CreateTask: React.FC = () => {
                                 <StyledTextarea
                                     value={remarks}
                                     onChange={(e) => setRemarks(e.target.value)}
-                                ></StyledTextarea>
+                                />
                             </InputIconWrapper>
                         </FormGroup>
                         {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
