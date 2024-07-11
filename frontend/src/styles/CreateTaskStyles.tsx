@@ -9,7 +9,7 @@ export const CreateTaskContainer = styled.div`
     padding: 10px;
 
     @media (max-width: 768px) {
-        padding: 10px;
+        padding: 30px;
     }
 `;
 
@@ -141,7 +141,7 @@ export interface OptionType {
 export const customStyles: StylesConfig<OptionType> = {
     control: (provided) => ({
         ...provided,
-        width: '80vw',
+        width: '70vw',
         padding: '10px',
         fontSize: '1rem',
         border: '1px solid #f0f0f0',
