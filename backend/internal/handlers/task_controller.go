@@ -10,7 +10,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// CreateTask は新しいタスクを作成するハンドラ関数です
+// 新しいタスクを作成するハンドラ関数
 func CreateTask(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var task models.Task
@@ -37,7 +37,7 @@ func CreateTask(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-// GetTasks は指定されたユーザーのタスクを取得するハンドラ関数です
+// 指定されたユーザーIDのタスクを取得するハンドラ関数
 func GetTasks(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		userID := r.URL.Query().Get("user_id")
@@ -61,7 +61,7 @@ func GetTasks(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-// GetUserTasks は指定されたタスクIDのタスクを取得するハンドラ関数です
+// 指定されたタスクIDのタスクを取得するハンドラ関数
 func GetUserTasks(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)

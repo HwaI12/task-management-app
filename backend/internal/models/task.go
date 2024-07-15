@@ -19,7 +19,7 @@ type Task struct {
 	Remarks  string `json:"remarks"`
 }
 
-// CreateTask inserts a new task into the database
+// データベースにタスクを保存する
 func CreateTask(db *sql.DB, task Task) (int64, error) {
 	query := `
         INSERT INTO tasks (user_id, title, deadline, priority, status, purpose, steps, memo, remarks)
@@ -38,7 +38,7 @@ func CreateTask(db *sql.DB, task Task) (int64, error) {
 	return taskID, nil
 }
 
-// GetTasksByUserID retrieves tasks for a specific user from the database
+// データベースからユーザーIDに紐づくタスクを取得する
 func GetTasksByUserID(db *sql.DB, userID string) ([]Task, error) {
 	rows, err := db.Query("SELECT id, user_id, title, purpose, deadline, priority, status, steps, memo, remarks FROM tasks WHERE user_id = ?", userID)
 	if err != nil {
@@ -58,7 +58,7 @@ func GetTasksByUserID(db *sql.DB, userID string) ([]Task, error) {
 	return tasks, nil
 }
 
-// GetTaskByID retrieves a specific task by ID from the database
+// データベースからタスクIDに紐づくタスクを取得する
 func GetTaskByID(db *sql.DB, taskID string) (Task, error) {
 	var task Task
 	err := db.QueryRow("SELECT id, user_id, title, deadline, priority, status, purpose, steps, memo, remarks FROM tasks WHERE id = ?", taskID).Scan(

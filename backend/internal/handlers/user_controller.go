@@ -5,15 +5,11 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+
+	"github.com/HwaI12/task-management-app/backend/internal/models"
 )
 
-// User はユーザー情報を表す構造体です
-type User struct {
-	UserID   string `json:"user_id"`
-	Username string `json:"username"`
-}
-
-// GetUser: ユーザー情報を取得するハンドラ関数
+// GetUserHandler はユーザー情報を取得するハンドラ関数です
 func GetUser(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		userId := r.URL.Query().Get("user_id")
@@ -23,8 +19,7 @@ func GetUser(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		var user User
-		err := db.QueryRow("SELECT user_id, username FROM users WHERE user_id = ?", userId).Scan(&user.UserID, &user.Username)
+		user, err := models.FetchUser(db, userId)
 		if err != nil {
 			if err == sql.ErrNoRows {
 				log.Printf("ユーザーが見つかりません: %s", userId)
