@@ -12,7 +12,7 @@ COPY . /app
 WORKDIR /app
 
 # Goアプリケーションをビルド
-RUN go build -o main .
+RUN go build -o main ./cmd/main.go
 
 # Supervisorの設定ファイルをコピー
 COPY supervisord.conf /etc/supervisor/supervisord.conf
