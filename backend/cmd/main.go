@@ -29,6 +29,9 @@ func main() {
 
 	entry.Infof("サーバーを起動します")
 	startServer(router)
+
+	defer entry.Infof("サーバーが終了しました")
+
 }
 
 func startServer(router http.Handler) {
