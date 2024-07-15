@@ -37,7 +37,7 @@ const Signin: React.FC = () => {
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 console.error('Signin error:', error.response?.data || error.message);
-                setErrorMessage(error.response?.data?.message || 'ログインに失敗しました。');
+                setErrorMessage(error.response?.data?.message || 'ログインIDまたはパスワードが正しくありません。');
             } else {
                 console.error('Unexpected error:', error);
                 setErrorMessage('予期せぬエラーが発生しました。');

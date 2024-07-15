@@ -17,6 +17,17 @@ const isAuthenticated = (): boolean => {
     return localStorage.getItem('authToken') !== null;
 };
 
+type PostDataType = {
+    title: string | null;
+    deadline: Date | null;
+    priority: SingleValue<OptionType> | null;
+    status: SingleValue<OptionType> | null;
+    purpose: string | null;
+    steps: string | null;
+    memo: string | null;
+    remarks: string | null;
+}
+
 const priorityOptions: OptionType[] = [
     { value: "high", label: "高" },
     { value: "middle", label: "中" },
@@ -31,14 +42,37 @@ const statusOptions: OptionType[] = [
 
 const CreateTask: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState('');
-    const [title, setTitle] = useState('');
-    const [deadline, setDeadline] = useState('');
-    const [priority, setPriority] = useState<SingleValue<OptionType>>(null);
-    const [status, setStatus] = useState<SingleValue<OptionType>>(null);
-    const [purpose, setPurpose] = useState('');
-    const [steps, setSteps] = useState('');
-    const [memo, setMemo] = useState('');
-    const [remarks, setRemarks] = useState('');
+    const [task, setTask] = useState<PostDataType>({
+        title: null,
+        deadline: null,
+        priority: null,
+        status: null,
+        purpose: null,
+        steps: null,
+        memo: null,
+        remarks: null,
+    });
+    console.log(task);
+    // const [title, setTitle] = useState('');
+    // const [deadline, setDeadline] = useState('');
+    // const [priority, setPriority] = useState<SingleValue<OptionType>>(null);
+    // const [status, setStatus] = useState<SingleValue<OptionType>>(null);
+    // const [purpose, setPurpose] = useState('');
+    // const [steps, setSteps] = useState('');
+    // const [memo, setMemo] = useState('');
+    // const [remarks, setRemarks] = useState('');
+
+    // const response = await axios.post('http://localhost:8000/api/tasks', {
+    //     user_id: userId,
+    //     title,
+    //     deadline,
+    //     priority: priority ? priority.value : '',
+    //     status: status ? status.value : '',
+    //     purpose,
+    //     steps,
+    //     memo,
+    //     remarks,
+    // });
 
     const { userId } = useParams<{ userId: string }>();
 
@@ -51,19 +85,22 @@ const CreateTask: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setErrorMessage('');
+    
+        const formattedTask = {
+            user_id: userId,
+            title: task.title || '',
+            deadline: task.deadline ? task.deadline.toISOString().split('T')[0] : '',
+            priority: task.priority ? task.priority.value : '',
+            status: task.status ? task.status.value : '',
+            purpose: task.purpose || '',
+            steps: task.steps || '',
+            memo: task.memo || '',
+            remarks: task.remarks || '',
+        };
+    
         try {
-            const response = await axios.post('http://localhost:8000/api/tasks', {
-                user_id: userId,
-                title,
-                deadline,
-                priority: priority ? priority.value : '',
-                status: status ? status.value : '',
-                purpose,
-                steps,
-                memo,
-                remarks,
-            });
-
+            const response = await axios.post('http://localhost:8000/api/tasks', formattedTask);
+    
             console.log('登録成功:', response.data);
             const newTaskId = response.data.id;
             navigate(`/${userId}/task/${newTaskId}`);
@@ -77,6 +114,7 @@ const CreateTask: React.FC = () => {
             }
         }
     };
+    
 
     return (
         <div>
@@ -87,20 +125,20 @@ const CreateTask: React.FC = () => {
                         <FormGroup>
                             <TitleLabel>タスクタイトル</TitleLabel>
                             <InputIconWrapper>
-                                <Input
+                                {/* <Input
                                     type="text"
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
-                                />
+                                /> */}
+                                <Input type="text"
+                                onChange={(e) => setTask({ ...task, title: e.target.value })} />
                             </InputIconWrapper>
                         </FormGroup>
                         <FormGroup>
                             <SubtitleLabel>目的</SubtitleLabel>
                             <InputIconWrapper>
-                                <Input
-                                    value={purpose}
-                                    onChange={(e) => setPurpose(e.target.value)}
-                                />
+                                <Input type="text"
+                                onChange={(e) => setTask({ ...task, purpose: e.target.value })} />
                             </InputIconWrapper>
                         </FormGroup>
                         <FormGroup>
@@ -108,8 +146,9 @@ const CreateTask: React.FC = () => {
                             <InputIconWrapper>
                                 <SelectGroup>
                                     <Select
-                                        value={priority}
-                                        onChange={(option) => setPriority(option as SingleValue<OptionType>)}
+                                        // value={priority}
+                                        // onChange={(option) => setPriority(option as SingleValue<OptionType>)}
+                                        onChange={(value) => setTask({ ...task, priority: value as SingleValue<OptionType> })}
                                         options={priorityOptions}
                                         placeholder="優先度を選択"
                                         styles={customStyles}
@@ -125,8 +164,7 @@ const CreateTask: React.FC = () => {
                             <InputIconWrapper>
                                 <Input
                                     type="date"
-                                    value={deadline}
-                                    onChange={(e) => setDeadline(e.target.value)}
+                                    onChange={(e) => setTask({ ...task, deadline: new Date(e.target.value) })}
                                 />
                             </InputIconWrapper>
                         </FormGroup>
@@ -135,8 +173,7 @@ const CreateTask: React.FC = () => {
                             <InputIconWrapper>
                                 <SelectGroup>
                                     <Select
-                                        value={status}
-                                        onChange={(option) => setStatus(option as SingleValue<OptionType>)}
+                                        onChange={(value) => setTask({ ...task, status: value as SingleValue<OptionType> })}
                                         options={statusOptions}
                                         placeholder="ステータスを選択"
                                         menuPortalTarget={document.body}
@@ -151,8 +188,7 @@ const CreateTask: React.FC = () => {
                             <SubtitleLabel>ステップ</SubtitleLabel>
                             <InputIconWrapper>
                                 <StyledTextarea
-                                    value={steps}
-                                    onChange={(e) => setSteps(e.target.value)}
+                                    
                                 />
                             </InputIconWrapper>
                         </FormGroup>
@@ -160,8 +196,7 @@ const CreateTask: React.FC = () => {
                             <SubtitleLabel>メモ</SubtitleLabel>
                             <InputIconWrapper>
                                 <StyledTextarea
-                                    value={memo}
-                                    onChange={(e) => setMemo(e.target.value)}
+                                    onChange={(e) => setTask({ ...task, memo: e.target.value })}
                                 />
                             </InputIconWrapper>
                         </FormGroup>
@@ -169,8 +204,7 @@ const CreateTask: React.FC = () => {
                             <SubtitleLabel>備考</SubtitleLabel>
                             <InputIconWrapper>
                                 <StyledTextarea
-                                    value={remarks}
-                                    onChange={(e) => setRemarks(e.target.value)}
+                                    onChange={(e) => setTask({ ...task, remarks: e.target.value })}
                                 />
                             </InputIconWrapper>
                         </FormGroup>

@@ -12,7 +12,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/HwaI12/task-management-app/backend/models"
+	"github.com/HwaI12/task-management-app/backend/internal/models"
 )
 
 var jwtKey = []byte("my_secret_key")

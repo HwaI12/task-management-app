@@ -6,13 +6,14 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/HwaI12/task-management-app/backend/models"
+	"github.com/HwaI12/task-management-app/backend/internal/models"
 )
 
 // CreateTask: 新しいタスクを作成するハンドラ関数
 func CreateTask(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var task models.Task
+
 		err := json.NewDecoder(r.Body).Decode(&task)
 		if err != nil {
 			log.Printf("リクエストの解析に失敗しました: %v", err)

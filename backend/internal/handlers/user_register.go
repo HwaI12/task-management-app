@@ -8,7 +8,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/HwaI12/task-management-app/backend/models"
+	"github.com/HwaI12/task-management-app/backend/internal/models"
 	"golang.org/x/crypto/bcrypt"
 )
 
