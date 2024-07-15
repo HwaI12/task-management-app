@@ -10,12 +10,5 @@ require (
 	golang.org/x/crypto v0.25.0
 )
 
-require (
-	github.com/google/uuid v1.6.0 // indirect
-	github.com/natefinch/lumberjack v2.0.0+incompatible // indirect
-	github.com/sirupsen/logrus v1.9.3 // indirect
-	golang.org/x/sys v0.22.0 // indirect
-)
-
 // Indirect dependencies
 require filippo.io/edwards25519 v1.1.0 // indirect
