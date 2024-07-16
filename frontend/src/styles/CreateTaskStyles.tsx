@@ -10,6 +10,7 @@ export const CreateTaskContainer = styled.div`
 
     @media (max-width: 768px) {
         padding: 30px;
+        margin-left: 0;
     }
 `;
 
@@ -25,7 +26,7 @@ export const Form = styled.form`
 
 export const FormGroup = styled.div`
     margin-bottom: 30px;
-    width: 100%;  /* フォームグループの幅を100%に */
+    width: 100%;
 `;
 
 export const TitleLabel = styled.label`

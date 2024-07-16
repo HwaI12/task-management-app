@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
-import { MarkdownPreview } from '../../styles/CreateTaskStyles';
-import { ContentContainer } from '../../styles/SidebarStyles';
+import { MarkdownPreview, TaskContainer } from '../../styles/ViewTaskStyles';
 import { Navigate, useParams } from 'react-router-dom';
 import Sidebar from '../common/Sidebar';
 
@@ -50,19 +49,18 @@ const ViewTask: React.FC = () => {
     return (
         <div>
             <Sidebar />
-            <ContentContainer>
-                <h2>タスク詳細ページ</h2>
+            <TaskContainer>
                 {task ? (
                     <MarkdownPreview>
                         <ReactMarkdown>{`
 # タイトル
-- ${task.title}
+${task.title}
 
 ## 目的
 ${task.purpose}
 
 ## 期限
-- ${task.deadline}
+${task.deadline}
 
 ## 優先度
 ${task.priority}
@@ -83,7 +81,7 @@ ${task.remarks}
                 ) : (
                     <p>タスクを読み込んでいます...</p>
                 )}
-            </ContentContainer>
+            </TaskContainer>
         </div>
     );
 };

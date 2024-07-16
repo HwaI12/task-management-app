@@ -79,9 +79,8 @@ const Profile: React.FC = () => {
                     <TaskCard key={task.id}>
                         <Link to={`/${userId}/task/${task.id}`}>
                             <h3>{task.title}</h3>
-                            {/* -----を表示 */}
-                            <hr />
-                            <p>{task.deadline}まで</p>
+                            <p>{task.purpose}</p>
+                            <p>{task.deadline}</p>
                         </Link>
                     </TaskCard>
                 ))

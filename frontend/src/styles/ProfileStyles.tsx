@@ -12,7 +12,6 @@ export const ContentContainer = styled.div`
     @media (max-width: 768px) {
         margin-left: 0;
         }
-
 `;
 
 export const PrioritySection = styled.div`
@@ -20,6 +19,10 @@ export const PrioritySection = styled.div`
     width: 50%;
     border-bottom: 1px solid #ccc;
     padding-bottom: 20px;
+
+    @media (max-width: 768px) {
+        width: 80%;
+    }
 `;
 
 export const StatusSection = styled.div`
@@ -52,14 +55,18 @@ export const UserContainer = styled.div`
     // margin-bottom: 40px;
     display: flex;
     flex-direction: row;
-    justify-content: center; // 中央揃え
-    align-items: flex-start; // 上揃え
-    // justify-content: flex-start; // 左揃えに変更
-    // align-items: flex-end; // 下に揃える
+    justify-content: center;
+    align-items: flex-start; 
+    // justify-content: flex-start;
+    // align-items: flex-end;
     transition: margin-left 0.3s ease;
     border-bottom: 1px solid #ccc;
-    padding: 50px 0 0 20px;
+    padding: 50px 0 0 0;
     width: 50%;
+
+    @media (max-width: 768px) {
+        width: 80%;
+    }
 `;
 
 export const TitleUserName = styled.p`
