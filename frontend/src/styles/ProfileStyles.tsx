@@ -8,6 +8,11 @@ export const ContentContainer = styled.div`
     margin-left: 60px;
     padding: 20px;
     transition: margin-left 0.3s ease;
+
+    @media (max-width: 768px) {
+        margin-left: 0;
+        }
+
 `;
 
 export const PrioritySection = styled.div`

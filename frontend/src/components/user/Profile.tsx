@@ -63,10 +63,10 @@ const Profile: React.FC = () => {
 
     if (!user) {
         return (
-            <div>
+            <ContentContainer>
                 <Sidebar />
                 このアカウントは存在しません
-            </div>
+            </ContentContainer>
         );
     }
 
@@ -79,8 +79,9 @@ const Profile: React.FC = () => {
                     <TaskCard key={task.id}>
                         <Link to={`/${userId}/task/${task.id}`}>
                             <h3>{task.title}</h3>
-                            <p>{task.purpose}</p>
-                            <p>期限: {task.deadline}</p>
+                            {/* -----を表示 */}
+                            <hr />
+                            <p>{task.deadline}まで</p>
                         </Link>
                     </TaskCard>
                 ))
